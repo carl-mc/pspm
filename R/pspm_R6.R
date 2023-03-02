@@ -469,8 +469,8 @@ PSPMLearn <- R6Class("PSPMLearn",
                             # Set the penalty parameter
                             self$sigma2 = sigma2
                             
-                            # Set the 'current_instance' iterator
-                            self$current_instance = 1
+                            # # Set the 'current_instance' iterator
+                            # self$current_instance = 1
                             
                           },
                           
