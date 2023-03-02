@@ -141,3 +141,6 @@ extract.pspmfit <- function(model, include.nobs = TRUE, include.loglik = TRUE, .
                      gof = gof, gof.decimal = gof.decimal)
   return(tr)
 }
+## Extend texreg package
+setMethod("extract", signature = className("maxLik", "maxLik"), 
+          definition = extract.pspmfit)

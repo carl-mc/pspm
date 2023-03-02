@@ -20,9 +20,6 @@ abstractmethod <- NULL
   PartitionModel <<- PartitionModel
   abstractmethod <<- abstractmethod
   
-  ## Extend texreg package
-  library(texreg)
-  setMethod("extract", signature = className("maxLik", "maxLik"), 
-            definition = extract.pspmfit)
+
 }
 
