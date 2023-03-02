@@ -19,6 +19,9 @@ abstractmethod <- NULL
   SpatialLattice <<- SpatialLattice
   PartitionModel <<- PartitionModel
   abstractmethod <<- abstractmethod
-
+  
+  ## Extend texreg package
+  setMethod("extract", signature = className("maxLik", "maxLik"), 
+            definition = extract.pspmfit)
 }
 
