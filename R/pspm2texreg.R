@@ -105,7 +105,16 @@ pspm2table <- function(model.ls, type = "latex",
 }
 
 
-# extend texreg packages
+
+#' Extension of texreg packages
+#'
+#' @param model PSPM Model
+#' @param include.nobs Include number of observations
+#' @param include.loglik Include logliklihood
+#' @param ... Other parameters
+#' @import texreg
+#'
+#' @return Object created by \code{texreg::createTexreg}
 extract.pspmfit <- function(model, include.nobs = TRUE, include.loglik = TRUE, ...) {
   s <- summary(model, ...)
   coefficient.names <- rownames(s$estimate)
