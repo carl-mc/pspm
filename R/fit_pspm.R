@@ -5,6 +5,20 @@
 
 
 
+#' Reduce graph to data necessary to estimate PSPM
+#'
+#' @param g igraph object
+#' @param formula Regression formula\code{y ~ x1 + x2}. y must refer to a vertex-attribut that 
+#' encodes partition memberships. x1, x2, etc. must refer to edge-level attributes that 
+#' encode edge-wise predictors. 
+#' @param network_stat (Empty) list of network statistics. Not used, for future extensions and backwards compatibility. 
+#' Type of likelihood used. Only \code{"composite_log_likelihood"} 
+#' @param force_contiguous Whether to force partitions encoded by y to be contiguous. 
+#' @param na.rm Flag to remove vertices and edges with missing data from the graph. 
+#'
+#' @return A clean graph to estimate a PSPM
+#'
+#' @examples
 model_graphframe <- function(g, formula, 
                              network_stat = list(),
                              force_contiguous = T, na.rm = F){
@@ -97,7 +111,17 @@ model_graphframe <- function(g, formula,
 }
 
 
-# Recode non-contiguous partitioning to be contiguous
+
+#' @title Recode non-contiguous partitioning to be contiguous
+#'
+#' @description Recodes partition memberships such that every partition is contiguous on the graph. 
+#' @param graph igraph object
+#' @param part_attr Vertex attribute that encodes partition membership.
+#'
+#' @return Numeric vector that encodes vertices partition IDs for contiguous partitions. 
+#' @import igraph
+#'
+#' @examples
 recode_contig_partitioning <- function(graph, part_attr){
   
   # Input partitionings
@@ -125,7 +149,41 @@ recode_contig_partitioning <- function(graph, part_attr){
   return(as.numeric(as.factor(part.output)))
 }
 
-# Input g can be a single graph of a list of graphs list of graphs 
+
+#' @title Fit a PSPM Model on a list of graphs
+#' @name fit_pspm_model
+#' 
+#' @return Returns a MaxLik model object. 
+#' 
+#' @param formula Regression formula\code{y ~ x1 + x2}. y must refer to a vertex-attribut that 
+#' encodes partition memberships. x1, x2, etc. must refer to edge-level attributes that 
+#' encode edge-wise predictors. 
+#'
+#' @param g_ls List of igraph objects
+#' @param network_stat (Empty) list of network statistics. Not used, for future extensions and backwards compatibility. 
+#' @param model_type Type of likelihood used. Only \code{"composite_log_likelihood"} 
+#' is implemented at the moment but future extensions are possible. 
+#' @param sigma2 Penalization parameter. Defaults to 10. 
+#' @param na.rm Remove missings from the data (both vertices and edges). 
+#' @param force_contiguous Enforce partitions' contiguity by resetting partition value such that 
+#' non-contiguous partitions are split. 
+#' @param split_connect_comp Split graph into connected components. This maybe necessary for graphs with unconnected components. 
+#' @param min_component_size Minimum number of vertices per connected components 
+#' (can be used to delete disconnected "islands" with only one vertex which 
+#' by definition form their own partition if partitions are enforces to be contiguous)
+#' @param vertex_coords Input spatial vertex coordinates to keep alongside the model. 
+#' As matrix or SpatialPoints* object. If \code{na.rm = T}, 
+#' coordinates will be deleted where vertex information is missing. 
+#' @param return_pspm Return PSPMLearn object alongside MaxLik model. Necessary to bootstrap standard errors.
+#' @param return_g_ls Return (reduced) graph objects alongside MaxLik model. Useful for plotting purposes. 
+#'
+
+#' 
+#' @details 
+#'      
+#' 
+#' @import infotheo
+#' @export
 fit_pspm_model <- function(formula, g_ls, 
                               network_stat = list(),
                             model_type = "composite_log_likelihood", 

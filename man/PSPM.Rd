@@ -32,9 +32,9 @@ Write about details here.
 
 \item{\code{Z}}{List of length L of NxN edge-wise covariates}
 
-\item{\code{Vector}}{of edge-wise covariate labels}
+\item{\code{Z.labs}}{Vector of edge-wise covariate labels}
 
-\item{\code{Number}}{of vertex predictors. Currently 1, not used. Only here for future extensions.}
+\item{\code{P}}{Number of vertex predictors. Currently 1, not used. Only here for future extensions.}
 
 \item{\code{X}}{NxP Matrix of vertex predictors, currently contains only one column full of 1s. 
 Currently not used. Only here for future extensions.}
@@ -49,15 +49,6 @@ corresponds to nodes.}
 \item{\code{verbose}}{Level of verbosity, binary flag.}
 
 \item{\code{force_contiguous}}{Flag on whether to enforce contiguous partitions. Input by user.}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{Vector}}{of edge-wise covariate labels}
-
-\item{\code{Number}}{of vertex predictors. Currently 1, not used. Only here for future extensions.}
 }
 \if{html}{\out{</div>}}
 }

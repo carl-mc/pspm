@@ -164,11 +164,11 @@ PSPM <- R6Class("PSPM",
                      #' List of length L of NxN edge-wise covariates
                      Z = NULL, # 
                      
-                     #' @field  
+                     #' @field  Z.labs
                      #' Vector of edge-wise covariate labels
                      Z.labs = NULL, 
                      
-                     #' @field  
+                     #' @field  P
                      #' Number of vertex predictors. Currently 1, not used. Only here for future extensions.
                      P = NULL, 
                      
