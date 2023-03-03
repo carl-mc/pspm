@@ -21,3 +21,98 @@ You can directly download and install the pspm package from GitHub. Before doing
 library(devtools)
 install_github(repo = "carl-mc/pspm")
 ```
+
+
+## Getting started
+
+```{r, eval = T}
+# Packages
+library(pspm)
+library(igraph)
+
+# Set seeds in R and python
+pspm_set_seed(1)
+
+```
+
+
+## Handling a toy lattice
+
+```{r, eval = T}
+# Make mock PSPM Object with a d partitioning
+sl <- generate_grid_data(N_sqrd = 10,
+                        beta0 = -2,
+                        beta = 2,
+                        dep_structure = "von_neumann",
+                        burnin = 10)
+sl$plot_partitioning(edge_predictor = 1, edge.width = 5, vertex.size = 10,
+                     main = "A Toy Lattice")
+```
+
+
+
+```{r, eval = T}
+# Transform PSPM to igraph
+graph <- PSPM2igraph(sl)
+edge_attr_names(graph)
+vertex_attr_names(graph)
+
+# Transform igraph back to PSPM
+sl.from.g <- igraph2PSPM(g = graph, outcome_name = "Y",
+                         edge_pred_names = "x1")
+
+```
+
+## Fitting a PSPM Model
+
+```{r, eval = T}
+## The easy way
+
+### Estimate
+m.simple <- fit_pspm_model(formula = Y ~ x1, 
+                           g_ls = list(graph),
+                           return_pspm = TRUE)
+
+### Bootstrap CIs
+bs.simple <- bootstrap_pspm(m.simple, n_boot_iter = 10, burnin = 10, 
+                            cl = 10L, return_sims = TRUE, ci_level = .95)
+
+### Summary
+summary(m.simple)
+print(bs.simple$ci_mat)
+plot(density(bs.simple$beta_boot[,"x1"]),
+     main = "Distribution of bootstrapped estimates of x1")
+
+```
+
+
+
+
+```{r, eval = T}
+## The complicated way (inside the wrapper)
+
+### Initiate PSPMLearn Object
+learn_obj <- PSPMLearn$new(list(sl.from.g))
+
+### Fit
+m.compl <- learn_obj$fit_composite_log_likelihood(beta_init = c(0,0))
+
+### Bootstrap
+bs.compl <- learn_obj$par_bootstrap_composite_log_likelihood(n_boot_iter = 10, burnin = 10, 
+                                                 cl = 10L, return_sims = FALSE, ci_level = .95)
+
+### Summary
+summary(m.compl)
+print(bs.compl)
+```
+
+
+## Producing nice tables
+```{r, eval = T}
+# Integration with texreg
+pspm2table(list(m.simple),
+           bootci = list(bs.simple$ci_mat), boottype = "percentile",
+           type = "text", add.stats = c("Edges" = "N_edges", "Vertices" = "N"))
+
+
+```
