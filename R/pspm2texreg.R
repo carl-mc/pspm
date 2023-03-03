@@ -2,16 +2,14 @@
 # SCCRF FIT OUTPUT TO LATEX / HTML
 ##################################
 
-require(texreg)
-
 # 
 #' Transfer fitted PSPM Model output to tex table
 #' 
 #' @description Builds directly on Philip Leifeld's texreg package. 
 #'
-#' @param model.ls List of models returned from \code{fit_pspm_model} or \code{PSPMLearn$fit_composite_log_likelihood}
+#' @param model.ls List of models returned from \code{fit_pspm_model}.
 #' @param type One of latex, text or html
-#' @param add.stats Statistics to add. 
+#' @param add.stats Statistics to add. Can be one of c("N_groups", "N_edges", "N_instances","MutInfo")
 #' @param custom.gof.rows Add custom rows.
 #' @param stars Stars to add (only if native standard errors are used)
 #' @param bootci List of bootstrapped CIs as returns from \code{bootstrap_pspm_model} or  or \code{PSPMLearn$bootstrap_composite_log_likelihood}
@@ -25,7 +23,7 @@ require(texreg)
 #'
 #' @examples
 pspm2table <- function(model.ls, type = "latex", 
-                        add.stats = c("N_groups", "N_edges", "N_instances","MutInfo"),
+                        add.stats = c(Edges = "N_edges"),
                         custom.gof.rows = NULL, 
                         stars = c(.01, .05, .1), 
                         bootci = F, boottype = "percentile", ...){
@@ -118,6 +116,11 @@ pspm2table <- function(model.ls, type = "latex",
 extract.pspmfit <- function(model, include.nobs = TRUE, include.loglik = TRUE, ...) {
   s <- summary(model, ...)
   coefficient.names <- rownames(s$estimate)
+  if(is.null(coefficient.names)){
+    coefficient.names <- c("Constant",
+                           paste0(rep("x", nrow(s$estimate)-1),
+                                  seq_len(nrow(s$estimate)-1)))
+  }
   coefficients <- s$estimate[, 1]
   standard.errors <- s$estimate[, 2]
   significance <- s$estimate[, 4]

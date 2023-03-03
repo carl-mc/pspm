@@ -8,6 +8,17 @@ Maintainer: Carl Muller-Crepon <c.a.muller-crepon@lse.ac.uk>
 Description: Simulation and estimation for spatial partitions. 
 License: file LICENSE
 Encoding: UTF-8
+Config/reticulate:
+  list(
+    packages = list(
+      list(package = "scipy", pip = TRUE),
+      list(package = "abc", pip = TRUE),
+      list(package = "numpy", pip = TRUE),
+      list(package = "networkx", pip = TRUE),
+      list(package = "typing", pip = TRUE),
+      list(package = "collections", pip = TRUE)
+    )
+  )
 Imports: reticulate,
   igraph,
   R6,

@@ -13,7 +13,7 @@ extract.pspmfit(model, include.nobs = TRUE, include.loglik = TRUE, ...)
 
 \item{include.loglik}{Include logliklihood}
 
-\item{...}{Other paramters}
+\item{...}{Other parameters}
 }
 \value{
 Object created by \code{texreg::createTexreg}

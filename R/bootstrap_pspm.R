@@ -1,5 +1,5 @@
 
-#' @description Parametric bootstrap
+#' @title PSPM Parametric Bootstrap
 #' 
 #' Returns confidence intervals and full set of 
 #' bootstrapped estimates from a parametric bootstrap of a fitted PSPM model. 
@@ -52,19 +52,19 @@ bootstrap_pspm <- function(model = NULL,
     
     ## Reset Beta to old value
     if(!is.null(beta)){
-      old_beta <- model$PSPMLearn$pspm_ls[[1]]$get_beta()
-      model$PSPMLearn$reset_beta(beta)
+      old_beta <- model$learn_obj$pspm_ls[[1]]$get_beta()
+      model$learn_obj$reset_beta(beta)
       cache_samples <- FALSE
     }
     
     ## Run bootstrap
-    bs <- model$PSPMLearn$par_bootstrap_composite_log_likelihood(cl = cl, n_boot_iter = n_boot_iter, burnin = burnin,
+    bs <- model$learn_obj$par_bootstrap_composite_log_likelihood(cl = cl, n_boot_iter = n_boot_iter, burnin = burnin,
                                                                  ci_level = ci_level, 
                                                                  return_sims = return_sims, cache_samples = cache_samples)
     
     ## Reset Beta to new value
     if(!is.null(beta)){
-      model$PSPMLearn$reset_beta(old_beta)
+      model$learn_obj$reset_beta(old_beta)
     }
   } else {
     

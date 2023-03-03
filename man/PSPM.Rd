@@ -146,7 +146,7 @@ Get beta parameters on PSPM object.
 \subsection{Method \code{plot_partitioning()}}{
 Plot partitioning of PSPM object as a labelled graph.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{PSPM$plot_partitioning(edge_predictor = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{PSPM$plot_partitioning(edge_predictor = NULL, ...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -154,6 +154,8 @@ Plot partitioning of PSPM object as a labelled graph.
 \describe{
 \item{\code{edge_predictor}}{ID or name of edge predictor to include
 to plot different edge types. Only binary edge predictors supported at the moment.}
+
+\item{\code{...}}{Options passed to plot.igraph()}
 }
 \if{html}{\out{</div>}}
 }

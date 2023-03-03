@@ -8,7 +8,7 @@
 #' Reduce graph to data necessary to estimate PSPM
 #'
 #' @param g igraph object
-#' @param formula Regression formula\code{y ~ x1 + x2}. y must refer to a vertex-attribut that 
+#' @param formula Regression formula\code{y ~ x1 + x2}. y must refer to a vertex-attribute that 
 #' encodes partition memberships. x1, x2, etc. must refer to edge-level attributes that 
 #' encode edge-wise predictors. 
 #' @param network_stat (Empty) list of network statistics. Not used, for future extensions and backwards compatibility. 

@@ -1,4 +1,17 @@
 
+
+
+
+#' @name pspm_set_seed
+#' @title Set a random seed in R and Python
+#' @param seed a single value, interpreted as an integer
+#' @export 
+pspm_set_seed <- function(seed) {
+  set.seed(seed)
+  py_set_seed(seed, disable_hash_randomization = TRUE)
+}
+
+
 ########################################
 # Bootstrap helper functions
 ########################################
@@ -301,7 +314,8 @@ PSPM <- R6Class("PSPM",
                      #' @description Plot partitioning of PSPM object as a labelled graph. 
                      #'
                      #' @param edge_predictor ID or name of edge predictor to include
-                     #'  to plot different edge types. Only binary edge predictors supported at the moment.
+                     #'  to plot different edges as different line types. 
+                     #'  Only binary edge predictors (dotted line if 1, straight otherwise) supported at the moment.
                      #' @param ... Options passed to plot.igraph()
                      #'  
                      #' @examples
@@ -331,22 +345,23 @@ PSPM <- R6Class("PSPM",
                          }
                          
                          if(any(!unique(predictor) %in% c(0,1))){
-                           warning("Plotting works only with binary edge predictor")
+                           warning("Plotting works only with binary or no edge predictor")
                          } else {
-                           edge_attr(plot_g, 'weight') <- predictor
+                           edge_attr(plot_g, 'weight') <- predictor 
                          }
                          
                        }
                        
                        # Encode edge types if any
                        edge_types <- E(plot_g)$weight
+                       plot_g <- delete_edge_attr(plot_g, "weight")
                        
                        # Plot
                        plot(plot_g,
                             vertex.color = cols[as.numeric(as.factor(self$Y))],
                             vertex.label = labels,
                             # layout = layout_on_grid(plot_g),
-                            edge.lty = ifelse(edge_types == 1, 2, 1),
+                            edge.lty = ifelse(edge_types == 1, 3, 1),
                             ...)
                      },
                      
