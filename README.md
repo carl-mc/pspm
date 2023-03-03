@@ -3,11 +3,17 @@
 We model the distribution over all possible partitionings *P* of lattice
 *G* as a Boltzmann distribution:
 
-$Pr(P = p_{i}) =  {e^{-\epsilon_{i}}\over \sum_{i = 1}^{|\mathbb{P}|} e^{-\epsilon_{i}} }$
+``` math
+Pr(P = p_{i}) =  {e^{-\epsilon_{i}}\over\displaystyle\sum_{i = 1}^{|\mathbb{P}|}e^{-\epsilon_{i}} }
+```
 
-$\epsilon_{i} = \sum_{j,k \in L}  \epsilon_{j,k} s_{j,k}$
+``` math
+\epsilon_{i} = \displaystyle\sum_{j,k \in L} \epsilon_{j,k}*s_{j,k}
+```
 
-$\epsilon_{j,k} = \beta_0 + \beta \textbf{x}_{j,k}$
+``` math
+\epsilon_{j,k} = \beta_0 + \beta\, \textbf{x}_{j,k}
+```
 
 When using the pspm package, please cite:
 
@@ -26,14 +32,18 @@ dependencies via the
 [reticulate](https://cran.r-project.org/web/packages/reticulate/index.html)
 R-package.
 
-    library(devtools)
-    install_github(repo = "carl-mc/pspm")
+``` r
+library(devtools)
+install_github(repo = "carl-mc/pspm")
+```
 
 ## Getting started
 
-    # Packages
-    library(pspm)
-    library(igraph)
+``` r
+# Packages
+library(pspm)
+library(igraph)
+```
 
     ## 
     ## Attaching package: 'igraph'
@@ -46,83 +56,99 @@ R-package.
     ## 
     ##     union
 
-    # Set seeds in R and python
-    pspm_set_seed(1)
+``` r
+# Set seeds in R and python
+pspm_set_seed(1)
+```
 
 ## Handling a toy lattice
 
-    # Make mock PSPM Object with a sampled partitioning
-    sl <- generate_grid_data(N_sqrd = 10, ## 10 x 10 lattice
-                            beta0 = -2, ## Negative constant = baseline attraction between nodes
-                            beta = c(2,1), ## Include two repulsive edge-level predictors
-                            dep_structure = "von_neumann", ## Each node connects to 4 neighbors
-                            burnin = 10 ## Sample with a 10 burn-in periods
-                            )
-    sl$plot_partitioning(edge_predictor = 1, 
-                         edge.width = 5, vertex.size = 10,
-                         main = "A Toy Lattice")
+``` r
+# Make mock PSPM Object with a sampled partitioning
+sl <- generate_grid_data(N_sqrd = 10, ## 10 x 10 lattice
+                        beta0 = -2, ## Negative constant = baseline attraction between nodes
+                        beta = c(2,1), ## Include two repulsive edge-level predictors
+                        dep_structure = "von_neumann", ## Each node connects to 4 neighbors
+                        burnin = 10 ## Sample with a 10 burn-in periods
+                        )
+sl$plot_partitioning(edge_predictor = 1, 
+                     edge.width = 5, vertex.size = 10,
+                     main = "A Toy Lattice")
+```
 
-![](README_files/figure-markdown_strict/unnamed-chunk-3-1.png)
+![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
-    # Transform PSPM to igraph
-    graph <- PSPM2igraph(sl)
-    edge_attr_names(graph)
+``` r
+# Transform PSPM to igraph
+graph <- PSPM2igraph(sl)
+edge_attr_names(graph)
+```
 
     ## [1] "x1" "x2"
 
-    vertex_attr_names(graph)
+``` r
+vertex_attr_names(graph)
+```
 
     ## [1] "X1" "Y"
 
-    # Transform igraph back to PSPM
-    sl.from.g <- igraph2PSPM(g = graph, outcome_name = "Y",
-                             edge_pred_names = c("x1", "x2"))
+``` r
+# Transform igraph back to PSPM
+sl.from.g <- igraph2PSPM(g = graph, outcome_name = "Y",
+                         edge_pred_names = c("x1", "x2"))
+```
 
 ## Fitting a PSPM Model
 
-    ## The easy way
+``` r
+## The easy way
 
-    ### Estimate
-    m.simple <- fit_pspm_model(formula = Y ~ x1 + x2, 
-                               g_ls = list(graph),
-                               return_pspm = TRUE)
+### Estimate
+m.simple <- fit_pspm_model(formula = Y ~ x1 + x2, 
+                           g_ls = list(graph),
+                           return_pspm = TRUE)
 
-    # ### Bootstrap CIs
-    # bs.simple <- bootstrap_pspm(m.simple, 
-    #                             n_boot_iter = 10, ## Should be > 100
-    #                             burnin = 10, ## Could be higher, depending on complexite of graph and model
-    #                             cl = 10L, ## Number of CPUs for parallelization
-    #                             return_sims = TRUE, ## Return full distribution of estimates
-    #                             ci_level = .95)
-    # 
-    # ### Summary
-    # summary(m.simple)
-    # print(bs.simple$ci_mat)
-    # plot(density(bs.simple$beta_boot[,"x1"]),
-    #      main = "Distribution of bootstrapped estimates of x1")
+# ### Bootstrap CIs
+# bs.simple <- bootstrap_pspm(m.simple, 
+#                             n_boot_iter = 10, ## Should be > 100
+#                             burnin = 10, ## Could be higher, depending on complexite of graph and model
+#                             cl = 10L, ## Number of CPUs for parallelization
+#                             return_sims = TRUE, ## Return full distribution of estimates
+#                             ci_level = .95)
+# 
+# ### Summary
+# summary(m.simple)
+# print(bs.simple$ci_mat)
+# plot(density(bs.simple$beta_boot[,"x1"]),
+#      main = "Distribution of bootstrapped estimates of x1")
+```
 
-    ## The complicated way (inside the wrapper)
+``` r
+## The complicated way (inside the wrapper)
 
-    ### Initiate PSPMLearn Object
-    learn_obj <- PSPMLearn$new(list(sl.from.g))
+### Initiate PSPMLearn Object
+learn_obj <- PSPMLearn$new(list(sl.from.g))
 
-    # ### Fit
-    # m.compl <- learn_obj$fit_composite_log_likelihood(beta_init = c(0,0,0))
-    # 
-    # ### Bootstrap
-    # bs.compl <- learn_obj$par_bootstrap_composite_log_likelihood(n_boot_iter = 10, burnin = 10, 
-    #                                                  cl = 10L, return_sims = FALSE, ci_level = .95)
-    # 
-    # ### Summary
-    # summary(m.compl)
-    # print(bs.compl)
+# ### Fit
+# m.compl <- learn_obj$fit_composite_log_likelihood(beta_init = c(0,0,0))
+# 
+# ### Bootstrap
+# bs.compl <- learn_obj$par_bootstrap_composite_log_likelihood(n_boot_iter = 10, burnin = 10, 
+#                                                  cl = 10L, return_sims = FALSE, ci_level = .95)
+# 
+# ### Summary
+# summary(m.compl)
+# print(bs.compl)
+```
 
 ## Producing nice tables
 
-    # Integration with texreg
-    pspm2table(list(m.simple),
-               # bootci = list(bs.simple$ci_mat), boottype = "percentile",
-               type = "text", add.stats = c("Edges" = "N_edges", "Vertices" = "N"))
+``` r
+# Integration with texreg
+pspm2table(list(m.simple),
+           # bootci = list(bs.simple$ci_mat), boottype = "percentile",
+           type = "text", add.stats = c("Edges" = "N_edges", "Vertices" = "N"))
+```
 
     ## 
     ## ==========================

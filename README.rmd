@@ -2,7 +2,8 @@
 title: "Probabilistic Spatial Partition Model"
 author: "Carl Müller-Crepon"
 output:
-   md_document
+   md_document:
+      variant: gfm
 
 ---
 
@@ -13,11 +14,11 @@ output:
 We model the distribution over all possible partitionings $P$ of lattice $G$ as a Boltzmann distribution:
 
 ```math
-Pr(P = p_{i}) =  {e^{-\epsilon_{i}}\over\sum_{i = 1}^{|\mathbb{P}|}e^{-\epsilon_{i}} }
+Pr(P = p_{i}) =  {e^{-\epsilon_{i}}\over\displaystyle\sum_{i = 1}^{|\mathbb{P}|}e^{-\epsilon_{i}} }
 ```
 
 ```math
-\epsilon_{i} = \sum_{j,k \in L} \epsilon_{j,k}*s_{j,k}
+\epsilon_{i} = \displaystyle\sum_{j,k \in L} \epsilon_{j,k}*s_{j,k}
 ```
 
 ```math
