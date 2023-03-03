@@ -715,17 +715,17 @@ PSPMLearn <- R6Class("PSPMLearn",
                               colnames(beta_boot_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs)
                               colnames(ci_basic_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs)
                               colnames(ci_perc_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs)
-                              rownames(ci_basic_mat) <- rownames(ci_perc_mat) <- c("LowerBound", "UpperBound")
+                              rownames(ci_basic_mat) <- c("LB_Basic", "UB_Basic")
+                              rownames(ci_perc_mat) <- c("LB_Perc", "UB_Perc")
                             }
-                            
+                     
                             # Prep return value
                             if (return_sims) {
                               out <- list(beta_boot = beta_boot_mat,
-                                          ci_basic = ci_basic_mat,
-                                          ci_percentile = ci_perc_mat)
+                                          ci_mat = rbind(ci_basic_mat,ci_perc_mat))
                             } else {
                               out <- list(ci_basic = ci_basic_mat,
-                                          ci_percentile = ci_perc_mat)
+                                          ci_mat = rbind(ci_basic_mat,ci_perc_mat))
                             }
                             
                             return(out)
