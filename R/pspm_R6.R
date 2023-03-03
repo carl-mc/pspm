@@ -302,9 +302,10 @@ PSPM <- R6Class("PSPM",
                      #'
                      #' @param edge_predictor ID or name of edge predictor to include
                      #'  to plot different edge types. Only binary edge predictors supported at the moment.
+                     #' @param ... Options passed to plot.igraph()
                      #'  
                      #' @examples
-                     plot_partitioning = function(edge_predictor = NULL) {
+                     plot_partitioning = function(edge_predictor = NULL, ...) {
                        # Plots the current lattice partitioning
                        
                        plot_adj_mat <- self$A
@@ -344,9 +345,9 @@ PSPM <- R6Class("PSPM",
                        plot(plot_g,
                             vertex.color = cols[as.numeric(as.factor(self$Y))],
                             vertex.label = labels,
-                            layout = layout_on_grid(plot_g),
+                            # layout = layout_on_grid(plot_g),
                             edge.lty = ifelse(edge_types == 1, 2, 1),
-                            edge.width = ifelse(edge_types == 1, 0.5, 2))
+                            ...)
                      },
                      
                      
@@ -653,7 +654,7 @@ PSPMLearn <- R6Class("PSPMLearn",
                               self$samples_cache <- list()
                             }
                             
-                            # Get the point estimates from the first pspm instance
+                            # Get the point estimates from the first sccrf instance
                             beta_point <- self$pspm_ls[[1]]$get_beta()
                             
                             # Bootstrap iterations
@@ -715,17 +716,17 @@ PSPMLearn <- R6Class("PSPMLearn",
                               colnames(beta_boot_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs)
                               colnames(ci_basic_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs)
                               colnames(ci_perc_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs)
-                              rownames(ci_basic_mat) <- c("LB_Basic", "UB_Basic")
-                              rownames(ci_perc_mat) <- c("LB_Perc", "UB_Perc")
+                              rownames(ci_basic_mat) <- rownames(ci_perc_mat) <- c("LowerBound", "UpperBound")
                             }
-                     
+                            
                             # Prep return value
                             if (return_sims) {
                               out <- list(beta_boot = beta_boot_mat,
-                                          ci_mat = rbind(ci_basic_mat,ci_perc_mat))
+                                          ci_basic = ci_basic_mat,
+                                          ci_percentile = ci_perc_mat)
                             } else {
                               out <- list(ci_basic = ci_basic_mat,
-                                          ci_mat = rbind(ci_basic_mat,ci_perc_mat))
+                                          ci_percentile = ci_perc_mat)
                             }
                             
                             return(out)
