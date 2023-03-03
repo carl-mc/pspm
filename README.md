@@ -1,12 +1,13 @@
 # pspm: Probabilistic Spatial Partition Model
 
 We model the distribution over all possible partitionings *P* of lattice
-*G* as a Boltzmann distribution: $Pr(P = p\_{i}) = {e^{-*{i}}*{i =
-1}<sup>{||}e</sup>{-\_{i}} }, $
+*G* as a Boltzmann distribution:
 
-$ *{i} = *{j,k L} \_{j,k}\*s\_{j,k}$
+    Pr(P = p_{i}) =  {e^{-\epsilon_{i}}\over\sum_{i = 1}^{|\mathbb{P}|}e^{-\epsilon_{i}} }
 
-*ϵ*<sub>*j*, *k*</sub> = *β*<sub>0</sub> + *β* **x**<sub>*j*, *k*</sub>
+    \epsilon_{i} = \sum_{j,k \in L} \epsilon_{j,k}*s_{j,k}
+
+    \epsilon_{j,k} = \beta_0 + \beta\, \textbf{x}_{j,k}
 
 When using the pspm package, please cite:
 
