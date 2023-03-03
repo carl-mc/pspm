@@ -3,11 +3,11 @@
 We model the distribution over all possible partitionings *P* of lattice
 *G* as a Boltzmann distribution:
 
-    Pr(P = p_{i}) =  {e^{-\epsilon_{i}}\over\sum_{i = 1}^{|\mathbb{P}|}e^{-\epsilon_{i}} }
+    $Pr(P = p_{i}) =  {e^{-\epsilon_{i}}\over\sum_{i = 1}^{|\mathbb{P}|}e^{-\epsilon_{i}} }$
 
-    \epsilon_{i} = \sum_{j,k \in L} \epsilon_{j,k}*s_{j,k}
+    $\epsilon_{i} = \sum_{j,k \in L} \epsilon_{j,k}*s_{j,k}$
 
-    \epsilon_{j,k} = \beta_0 + \beta\, \textbf{x}_{j,k}
+    $\epsilon_{j,k} = \beta_0 + \beta\, \textbf{x}_{j,k}$
 
 When using the pspm package, please cite:
 
