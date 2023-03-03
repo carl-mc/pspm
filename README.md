@@ -12,7 +12,7 @@ a member of one and only one partition. The graphs partitioning is
 modeled as the result of *attractive* and *repulsive* force active on
 its edges which affect the probability that the vertices they connect
 belong to the same or to different partitions. The model allows to
-estimate the effects of edge-elvel attributes on the
+estimate the effects of edge-level attributes on the
 repulsion/attraction between vertices, thus estimating their impact on
 the overall partitioning of the graph.
 
@@ -62,19 +62,23 @@ $\textbf{x}_{j,k}$ that are weighted by a parameter vector $\beta$
 ```
 
 The empirical goal of the PSPM is it to estimate parameters $\beta_0$
-and $\beta$ from observed data. To that intent, the PSPM uses a maximum
-composite likelihood approach. Uncertainty estimates can be derived via
-a parametric bootstrap that samples partitionings with a given set of
-$\beta_0$ and $\beta$ parameters and then fits the model on the sampled
-partitionings.
+and $\beta$ from observed data – a positive $\beta$ indicates that an
+attribute exerts a *repulsive* force, whereas a negative one indicates
+an *attractive* force. This is due to the fact that an overal
+minimization of a partitings’ energy maximizes its likelihood of
+realization. To find the parameters that maximize this likelihood, the
+PSPM uses a maximum composite likelihood approach. Uncertainty estimates
+can be derived via a parametric bootstrap that samples partitionings
+with a given set of $\beta_0$ and $\beta$ parameters and then fits the
+model on the sampled partitionings.
 
 ## Installation
 
 You can directly download and install the pspm package from GitHub.
 Before doing so, please make sure that you have
-[Python3](https://www.python.org/downloads/) installed. Upon
-installation, the package automatically installs necessary python
-dependencies via the
+[Python3](https://www.python.org/downloads/) installed, which the
+package heavily relies on. Upon installation, the package automatically
+installs necessary python dependencies via the
 [reticulate](https://cran.r-project.org/web/packages/reticulate/index.html)
 R-package.
 

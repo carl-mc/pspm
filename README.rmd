@@ -12,7 +12,7 @@ output:
 
 ## Introduction
 
-This packages contains a series of functions and classes to set up and fit a Probabilistic Spatial Partition Model and sample partitionings following the the methodology introduced by Müller-Crepon, Schvitz and Cederman (2023). In short, the model is based on a simplification of continuous geographic space as a (planar) graph. The observed partitioning is encoded on the graphs' vertices such that each vertex is a member of one and only one partition. The graphs partitioning is modeled as the result of _attractive_ and _repulsive_ force active on its edges which affect the probability that the vertices they connect belong to the same or to different partitions. The model allows to estimate the effects of edge-elvel attributes on the repulsion/attraction between vertices, thus estimating their impact on the overall partitioning of the graph.  
+This packages contains a series of functions and classes to set up and fit a Probabilistic Spatial Partition Model and sample partitionings following the the methodology introduced by Müller-Crepon, Schvitz and Cederman (2023). In short, the model is based on a simplification of continuous geographic space as a (planar) graph. The observed partitioning is encoded on the graphs' vertices such that each vertex is a member of one and only one partition. The graphs partitioning is modeled as the result of _attractive_ and _repulsive_ force active on its edges which affect the probability that the vertices they connect belong to the same or to different partitions. The model allows to estimate the effects of edge-level attributes on the repulsion/attraction between vertices, thus estimating their impact on the overall partitioning of the graph.  
 
 Please refer to the original publication for all technical details beyond the summary provided below. It can be found [here]() and as ungated version [here](http://www.carlmueller-crepon.org/publication/state_shape/). 
 
@@ -44,13 +44,13 @@ Potential and realized edge-level energies are in turn affected by a constant ($
 \epsilon_{j,k} = \beta_0 + \beta\, \textbf{x}_{j,k}
 ```
 
-The empirical goal of the PSPM is it to estimate parameters $\beta_0$ and $\beta$ from observed data. To that intent, the PSPM uses a maximum composite likelihood approach. Uncertainty estimates can be derived via a parametric bootstrap that samples partitionings with a given set of $\beta_0$ and $\beta$ parameters and then fits the model on the sampled partitionings. 
+The empirical goal of the PSPM is it to estimate parameters $\beta_0$ and $\beta$ from observed data -- a positive $\beta$ indicates that an attribute exerts a _repulsive_ force, whereas a negative one indicates an _attractive_ force. This is due to the fact that an overal minimization of a partitings' energy maximizes its likelihood of realization. To find the parameters that maximize this likelihood, the PSPM uses a maximum composite likelihood approach. Uncertainty estimates can be derived via a parametric bootstrap that samples partitionings with a given set of $\beta_0$ and $\beta$ parameters and then fits the model on the sampled partitionings. 
 
 
 
 ## Installation
 
-You can directly download and install the pspm package from GitHub. Before doing so, please make sure that you have [Python3](https://www.python.org/downloads/) installed. Upon installation, the package automatically installs necessary python dependencies via the [reticulate](https://cran.r-project.org/web/packages/reticulate/index.html) R-package. 
+You can directly download and install the pspm package from GitHub. Before doing so, please make sure that you have [Python3](https://www.python.org/downloads/) installed, which the package heavily relies on. Upon installation, the package automatically installs necessary python dependencies via the [reticulate](https://cran.r-project.org/web/packages/reticulate/index.html) R-package. 
 
 ```{r, eval = F}
 library(devtools)
