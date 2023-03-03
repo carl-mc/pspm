@@ -10,6 +10,20 @@ output:
 # pspm: Probabilistic Spatial Partition Model
 
 
+We model the distribution over all possible partitionings $P$ of lattice $G$ as a Boltzmann distribution:
+$$
+    Pr(P = p_{i}) = \frac{e^{-\epsilon_{i}}}{\sum_{i = 1}^{|\mathbb{P}|}e^{-\epsilon_{i}}} ,
+$$
+
+
+
+$$
+    \epsilon_{i} = \sum_{j,k \in L} \epsilon_{j,k}*s_{j,k}, %\mathbbm{1}_{j=k},
+$$
+$$
+\epsilon_{j,k} = \beta_0 + \beta\, \textbf{x}_{j,k},
+$$
+
 
 
 When using the pspm package, please cite:
@@ -17,6 +31,8 @@ When using the pspm package, please cite:
 Müller-Crepon, Carl, Guy Schvitz, Lars-Erik Cederman (2023).
 Shaping States into Nations: The Effects of Ethnic Geography on State Borders.
 _American Journal of Political Science_, conditionally accepted for publication.  
+
+
 
 
 ## Installation
@@ -81,19 +97,19 @@ m.simple <- fit_pspm_model(formula = Y ~ x1 + x2,
                            g_ls = list(graph),
                            return_pspm = TRUE)
 
-### Bootstrap CIs
-bs.simple <- bootstrap_pspm(m.simple, 
-                            n_boot_iter = 10, ## Should be > 100
-                            burnin = 10, ## Could be higher, depending on complexite of graph and model
-                            cl = 10L, ## Number of CPUs for parallelization
-                            return_sims = TRUE, ## Return full distribution of estimates
-                            ci_level = .95)
-
-### Summary
-summary(m.simple)
-print(bs.simple$ci_mat)
-plot(density(bs.simple$beta_boot[,"x1"]),
-     main = "Distribution of bootstrapped estimates of x1")
+# ### Bootstrap CIs
+# bs.simple <- bootstrap_pspm(m.simple, 
+#                             n_boot_iter = 10, ## Should be > 100
+#                             burnin = 10, ## Could be higher, depending on complexite of graph and model
+#                             cl = 10L, ## Number of CPUs for parallelization
+#                             return_sims = TRUE, ## Return full distribution of estimates
+#                             ci_level = .95)
+# 
+# ### Summary
+# summary(m.simple)
+# print(bs.simple$ci_mat)
+# plot(density(bs.simple$beta_boot[,"x1"]),
+#      main = "Distribution of bootstrapped estimates of x1")
 
 ```
 
@@ -106,16 +122,16 @@ plot(density(bs.simple$beta_boot[,"x1"]),
 ### Initiate PSPMLearn Object
 learn_obj <- PSPMLearn$new(list(sl.from.g))
 
-### Fit
-m.compl <- learn_obj$fit_composite_log_likelihood(beta_init = c(0,0,0))
-
-### Bootstrap
-bs.compl <- learn_obj$par_bootstrap_composite_log_likelihood(n_boot_iter = 10, burnin = 10, 
-                                                 cl = 10L, return_sims = FALSE, ci_level = .95)
-
-### Summary
-summary(m.compl)
-print(bs.compl)
+# ### Fit
+# m.compl <- learn_obj$fit_composite_log_likelihood(beta_init = c(0,0,0))
+# 
+# ### Bootstrap
+# bs.compl <- learn_obj$par_bootstrap_composite_log_likelihood(n_boot_iter = 10, burnin = 10, 
+#                                                  cl = 10L, return_sims = FALSE, ci_level = .95)
+# 
+# ### Summary
+# summary(m.compl)
+# print(bs.compl)
 ```
 
 
@@ -123,7 +139,7 @@ print(bs.compl)
 ```{r, eval = T}
 # Integration with texreg
 pspm2table(list(m.simple),
-           bootci = list(bs.simple$ci_mat), boottype = "percentile",
+           # bootci = list(bs.simple$ci_mat), boottype = "percentile",
            type = "text", add.stats = c("Edges" = "N_edges", "Vertices" = "N"))
 
 

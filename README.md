@@ -1,5 +1,14 @@
 # pspm: Probabilistic Spatial Partition Model
 
+We model the distribution over all possible partitionings *P* of lattice
+*G* as a Boltzmann distribution:
+$$
+    Pr(P = p\_{i}) = \frac{e^{-\epsilon\_{i}}}{\sum\_{i = 1}^{|\mathbb{P}|}e^{-\epsilon\_{i}}} ,
+$$
+
+*ϵ*<sub>*i*</sub> = ∑<sub>*j*, *k* ∈ *L*</sub>*ϵ*<sub>*j*, *k*</sub> \* *s*<sub>*j*, *k*</sub>,
+*ϵ*<sub>*j*, *k*</sub> = *β*<sub>0</sub> + *β* **x**<sub>*j*, *k*</sub>,
+
 When using the pspm package, please cite:
 
 Müller-Crepon, Carl, Guy Schvitz, Lars-Erik Cederman (2023). Shaping
@@ -78,110 +87,57 @@ R-package.
                                g_ls = list(graph),
                                return_pspm = TRUE)
 
-    ### Bootstrap CIs
-    bs.simple <- bootstrap_pspm(m.simple, 
-                                n_boot_iter = 10, ## Should be > 100
-                                burnin = 10, ## Could be higher, depending on complexite of graph and model
-                                cl = 10L, ## Number of CPUs for parallelization
-                                return_sims = TRUE, ## Return full distribution of estimates
-                                ci_level = .95)
-
-    ## [1] "Load Learn Object on cluster"
-    ## [1] "Run Bootstrap"
-
-    ### Summary
-    summary(m.simple)
-
-    ## --------------------------------------------
-    ## Maximum Likelihood estimation
-    ## BFGS maximization, 31 iterations
-    ## Return code 0: successful convergence 
-    ## Log-Likelihood: -13.44675 
-    ## 3  free parameters
-    ## Estimates:
-    ##          Estimate Std. error t value  Pr(> t)    
-    ## Constant  -2.5097     0.5919  -4.240 2.23e-05 ***
-    ## x1         1.9450     1.8374   1.059    0.290    
-    ## x2         0.4492     0.9306   0.483    0.629    
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## --------------------------------------------
-
-    print(bs.simple$ci_mat)
-
-    ##            Constant        x1         x2
-    ## LB_Basic -3.3369735 1.6394587 -0.6487487
-    ## UB_Basic -0.8817648 2.9760757  2.3140127
-    ## LB_Perc  -4.1375785 0.9139855 -1.4156026
-    ## UB_Perc  -1.6823697 2.2506025  1.5471588
-
-    plot(density(bs.simple$beta_boot[,"x1"]),
-         main = "Distribution of bootstrapped estimates of x1")
-
-![](README_files/figure-markdown_strict/unnamed-chunk-5-1.png)
+    # ### Bootstrap CIs
+    # bs.simple <- bootstrap_pspm(m.simple, 
+    #                             n_boot_iter = 10, ## Should be > 100
+    #                             burnin = 10, ## Could be higher, depending on complexite of graph and model
+    #                             cl = 10L, ## Number of CPUs for parallelization
+    #                             return_sims = TRUE, ## Return full distribution of estimates
+    #                             ci_level = .95)
+    # 
+    # ### Summary
+    # summary(m.simple)
+    # print(bs.simple$ci_mat)
+    # plot(density(bs.simple$beta_boot[,"x1"]),
+    #      main = "Distribution of bootstrapped estimates of x1")
 
     ## The complicated way (inside the wrapper)
 
     ### Initiate PSPMLearn Object
     learn_obj <- PSPMLearn$new(list(sl.from.g))
 
-    ### Fit
-    m.compl <- learn_obj$fit_composite_log_likelihood(beta_init = c(0,0,0))
-
-    ### Bootstrap
-    bs.compl <- learn_obj$par_bootstrap_composite_log_likelihood(n_boot_iter = 10, burnin = 10, 
-                                                     cl = 10L, return_sims = FALSE, ci_level = .95)
-
-    ## [1] "Load Learn Object on cluster"
-    ## [1] "Run Bootstrap"
-
-    ### Summary
-    summary(m.compl)
-
-    ## --------------------------------------------
-    ## Maximum Likelihood estimation
-    ## BFGS maximization, 31 iterations
-    ## Return code 0: successful convergence 
-    ## Log-Likelihood: -13.44675 
-    ## 3  free parameters
-    ## Estimates:
-    ##      Estimate Std. error t value  Pr(> t)    
-    ## [1,]  -2.5097     0.5919  -4.240 2.23e-05 ***
-    ## [2,]   1.9450     1.8374   1.059    0.290    
-    ## [3,]   0.4492     0.9306   0.483    0.629    
-    ## ---
-    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## --------------------------------------------
-
-    print(bs.compl)
-
-    ##            Constant        x1         x2
-    ## LB_Basic -3.3369735 1.6394587 -0.6487487
-    ## UB_Basic -0.8817648 2.9760757  2.3140127
-    ## LB_Perc  -4.1375785 0.9139855 -1.4156026
-    ## UB_Perc  -1.6823697 2.2506025  1.5471588
+    # ### Fit
+    # m.compl <- learn_obj$fit_composite_log_likelihood(beta_init = c(0,0,0))
+    # 
+    # ### Bootstrap
+    # bs.compl <- learn_obj$par_bootstrap_composite_log_likelihood(n_boot_iter = 10, burnin = 10, 
+    #                                                  cl = 10L, return_sims = FALSE, ci_level = .95)
+    # 
+    # ### Summary
+    # summary(m.compl)
+    # print(bs.compl)
 
 ## Producing nice tables
 
     # Integration with texreg
     pspm2table(list(m.simple),
-               bootci = list(bs.simple$ci_mat), boottype = "percentile",
+               # bootci = list(bs.simple$ci_mat), boottype = "percentile",
                type = "text", add.stats = c("Edges" = "N_edges", "Vertices" = "N"))
 
     ## 
-    ## ==============================
-    ##                 Model 1       
-    ## ------------------------------
-    ## Constant         -2.51 *      
-    ##                 [-4.14; -1.68]
-    ## x1                1.95 *      
-    ##                 [ 0.91;  2.25]
-    ## x2                0.45        
-    ##                 [-1.42;  1.55]
-    ## ------------------------------
-    ## Edges           180           
-    ## Vertices        100           
-    ## Log-Likelihood  -13.45        
-    ## Num. obs.       100           
-    ## ==============================
-    ## * 0 outside the confidence interval.
+    ## ==========================
+    ##                 Model 1   
+    ## --------------------------
+    ## Constant         -2.51 ***
+    ##                  (0.59)   
+    ## x1                1.95    
+    ##                  (1.84)   
+    ## x2                0.45    
+    ##                  (0.93)   
+    ## --------------------------
+    ## Edges           180       
+    ## Vertices        100       
+    ## Log-Likelihood  -13.45    
+    ## Num. obs.       100       
+    ## ==========================
+    ## *** p < 0.01; ** p < 0.05; * p < 0.1
