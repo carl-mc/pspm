@@ -16,6 +16,8 @@ This packages contains a series of functions and classes to set up and fit a Pro
 
 Please refer to the original publication for all technical details beyond the summary provided below. It can be found [here]() and as ungated version [here](http://www.carlmueller-crepon.org/publication/state_shape/). 
 
+Note that our companion R-package [`SpatialLattice`](https://github.com/carl-mc/SpatialLattice) simplifies the creation and handling of spatial graphs to facilitate the analysis of spatial partitionings.  
+
 When using the pspm package, please cite:
 
 Müller-Crepon, Carl, Guy Schvitz, Lars-Erik Cederman (2023).
@@ -58,7 +60,7 @@ install_github(repo = "carl-mc/pspm")
 
 ## Getting started
 
-the pspm package heavily builds on the igraph library which is used to handle the underlying netowrk data and allows user-friendly data manipulation. Since random sampling plays an important role during sampling, it is recommended to set a random seed in R and python. `pspm_set_seed()` achieves just that. 
+the pspm package heavily builds on the igraph library which is used to handle the underlying network data and allows user-friendly data manipulation. Since random sampling plays an important role during sampling, it is recommended to set a random seed in R and python. `pspm_set_seed()` achieves just that. 
 
 ```{r, eval = T, warning=FALSE, message=F}
 # Packages
@@ -74,6 +76,8 @@ pspm_set_seed(1)
 ## Setting up a toy lattice
 
 To illustrate the model. we first set up a toy lattice -- as a `PSPM` object -- with 100 nodes arranges on a 10-by-10 grid. The lattice encodes two edge-level characteristics that separate one side of the lattice from the other -- think of a river or mountain range. The distribution of one of these attributes is shown as dotted vs. straight edges on the graph below. Both attributes exert _repulsive_ forces (`beta = c(2,1)`). Furthermore, the vertices are attracted to each other by a baseline constant of -2. We sample a partitioning of the lattice with a burn-in period of 10 rounds.
+
+Please see the R-package [`SpatialLattice`](https://github.com/carl-mc/SpatialLattice) for code and examples on how to construct spatial graph data for observed spatial partitionings. 
 
 ```{r, eval = T}
 # Make mock PSPM Object with a sampled partitioning
@@ -116,7 +120,7 @@ sl.from.g <- igraph2PSPM(g = graph,
 
 ## Fitting a PSPM Model
 
-Finally, we can fit the PSPM to estimate the effect of the edge-level attributes on the partitioning of the lattice. The function `fit_pspm_model()` provides a wrapper around lower-level functions and classes, allowing the user to estimate the model directly from an `igraph` object with a formula where the left-handside variable Y refers to the vertex attribute that encodes vertices partition members and the right-handside variables referring to edge-level predictors. Multiple graphs can be passed to the function at the same time such that one model is fit across them. Once a model is fit, `bootstrap_pspm()` allows for carrying out a (parallelized) parametric bootstrap. 
+Finally, we can fit the PSPM to estimate the effect of the edge-level attributes on the partitioning of the lattice. The function `fit_pspm_model()` provides a wrapper around lower-level functions and classes, allowing the user to estimate the model directly from an `igraph` object with a formula where the left-handside variable Y refers to the vertex attribute that encodes vertices partition members and the right-handside variables referring to edge-level predictors. Multiple graphs can be passed to the function at the same time such that one model is fit across them. Once a model is fit, `bootstrap_pspm()` allows for carrying out a (parallelized) parametric bootstrap which can return the full distribution of estimates as well as (basic and percentile-based) confidence intervals. 
 
 ```{r, eval = T}
 ## The easy way
@@ -172,7 +176,7 @@ Finally, models fitted with  `fit_pspm_model()` and the (`maxLik`)[https://cran.
 ```{r, eval = T}
 # Integration with texreg
 pspm2table(list(m.simple),
-           # bootci = list(bs.simple$ci_mat), boottype = "percentile",
+           bootci = list(bs.simple$ci_mat), boottype = "percentile",
            type = "text", add.stats = c("Edges" = "N_edges", "Vertices" = "N"))
 
 

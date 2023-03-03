@@ -21,6 +21,11 @@ beyond the summary provided below. It can be found [here]() and as
 ungated version
 [here](http://www.carlmueller-crepon.org/publication/state_shape/).
 
+Note that our companion R-package
+[`SpatialLattice`](https://github.com/carl-mc/SpatialLattice) simplifies
+the creation and handling of spatial graphs to facilitate the analysis
+of spatial partitionings.
+
 When using the pspm package, please cite:
 
 Müller-Crepon, Carl, Guy Schvitz, Lars-Erik Cederman (2023). Shaping
@@ -81,7 +86,7 @@ install_github(repo = "carl-mc/pspm")
 ## Getting started
 
 the pspm package heavily builds on the igraph library which is used to
-handle the underlying netowrk data and allows user-friendly data
+handle the underlying network data and allows user-friendly data
 manipulation. Since random sampling plays an important role during
 sampling, it is recommended to set a random seed in R and python.
 `pspm_set_seed()` achieves just that.
@@ -106,6 +111,11 @@ graph below. Both attributes exert *repulsive* forces (`beta = c(2,1)`).
 Furthermore, the vertices are attracted to each other by a baseline
 constant of -2. We sample a partitioning of the lattice with a burn-in
 period of 10 rounds.
+
+Please see the R-package
+[`SpatialLattice`](https://github.com/carl-mc/SpatialLattice) for code
+and examples on how to construct spatial graph data for observed spatial
+partitionings.
 
 ``` r
 # Make mock PSPM Object with a sampled partitioning
@@ -170,7 +180,9 @@ to the vertex attribute that encodes vertices partition members and the
 right-handside variables referring to edge-level predictors. Multiple
 graphs can be passed to the function at the same time such that one
 model is fit across them. Once a model is fit, `bootstrap_pspm()` allows
-for carrying out a (parallelized) parametric bootstrap.
+for carrying out a (parallelized) parametric bootstrap which can return
+the full distribution of estimates as well as (basic and
+percentile-based) confidence intervals.
 
 ``` r
 ## The easy way
@@ -297,27 +309,27 @@ package.
 ``` r
 # Integration with texreg
 pspm2table(list(m.simple),
-           # bootci = list(bs.simple$ci_mat), boottype = "percentile",
+           bootci = list(bs.simple$ci_mat), boottype = "percentile",
            type = "text", add.stats = c("Edges" = "N_edges", "Vertices" = "N"))
 ```
 
     ## 
-    ## ==========================
-    ##                 Model 1   
-    ## --------------------------
-    ## Constant         -2.51 ***
-    ##                  (0.59)   
-    ## x1                1.95    
-    ##                  (1.84)   
-    ## x2                0.45    
-    ##                  (0.93)   
-    ## --------------------------
-    ## Edges           180       
-    ## Vertices        100       
-    ## Log-Likelihood  -13.45    
-    ## Num. obs.       100       
-    ## ==========================
-    ## *** p < 0.01; ** p < 0.05; * p < 0.1
+    ## ==============================
+    ##                 Model 1       
+    ## ------------------------------
+    ## Constant         -2.51 *      
+    ##                 [-4.14; -1.68]
+    ## x1                1.95 *      
+    ##                 [ 0.91;  2.25]
+    ## x2                0.45        
+    ##                 [-1.42;  1.55]
+    ## ------------------------------
+    ## Edges           180           
+    ## Vertices        100           
+    ## Log-Likelihood  -13.45        
+    ## Num. obs.       100           
+    ## ==============================
+    ## * 0 outside the confidence interval.
 
 ## Feedback, comments, questions
 
