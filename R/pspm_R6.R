@@ -653,7 +653,7 @@ PSPMLearn <- R6Class("PSPMLearn",
                               self$samples_cache <- list()
                             }
                             
-                            # Get the point estimates from the first sccrf instance
+                            # Get the point estimates from the first pspm instance
                             beta_point <- self$pspm_ls[[1]]$get_beta()
                             
                             # Bootstrap iterations

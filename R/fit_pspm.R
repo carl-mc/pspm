@@ -185,7 +185,7 @@ recode_contig_partitioning <- function(graph, part_attr){
 #' @import infotheo
 #' @export
 fit_pspm_model <- function(formula, g_ls, 
-                              network_stat = list(),
+                            network_stat = list(),
                             model_type = "composite_log_likelihood", 
                             sigma2 = 10, na.rm = TRUE, 
                             force_contiguous = TRUE,
