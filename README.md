@@ -1,19 +1,25 @@
 # pspm: Probabilistic Spatial Partition Model
 
-We model the distribution over all possible partitionings *P* of lattice
-*G* as a Boltzmann distribution:
+## Introduction
 
-``` math
-Pr(P = p_{i}) =  {e^{-\epsilon_{i}}\over\displaystyle\sum_{i = 1}^{|\mathbb{P}|}e^{-\epsilon_{i}} }
-```
+This packages contains a series of functions and classes to set up and
+fit a Probabilistic Spatial Partition Model and sample partitionings
+following the the methodology introduced by Müller-Crepon, Schvitz and
+Cederman (2023). In short, the model is based on a simplification of
+continuous geographic space as a (planar) graph. The observed
+partitioning is encoded on the graphs’ vertices such that each vertex is
+a member of one and only one partition. The graphs partitioning is
+modeled as the result of *attractive* and *repulsive* force active on
+its edges which affect the probability that the vertices they connect
+belong to the same or to different partitions. The model allows to
+estimate the effects of edge-elvel attributes on the
+repulsion/attraction between vertices, thus estimating their impact on
+the overall partitioning of the graph.
 
-``` math
-\epsilon_{i} = \displaystyle\sum_{j,k \in L} \epsilon_{j,k}*s_{j,k}
-```
-
-``` math
-\epsilon_{j,k} = \beta_0 + \beta\, \textbf{x}_{j,k}
-```
+Please refer to the original publication for all technical details
+beyond the summary provided below. It can be found [here]() and as
+ungated version
+[here](http://www.carlmueller-crepon.org/publication/state_shape/).
 
 When using the pspm package, please cite:
 
@@ -21,6 +27,41 @@ Müller-Crepon, Carl, Guy Schvitz, Lars-Erik Cederman (2023). Shaping
 States into Nations: The Effects of Ethnic Geography on State Borders.
 *American Journal of Political Science*, conditionally accepted for
 publication.
+
+## The model
+
+We model the distribution over all possible partitionings $P$ of lattice
+$G$ as a Boltzmann distribution:
+
+``` math
+Pr(P = p_{i}) =  {e^{-\epsilon_{i}}\over\displaystyle\sum_{i = 1}^{|\mathbb{P}|}e^{-\epsilon_{i}} }
+```
+
+here, a partitioning $i$’s chance of realization decreases with its
+energy $\epsilon_i$. The energy of a partitioning is defined as the sum
+of energies on the graph’s edges that run between nodes $j$ and $k$
+where $j$ and $k$ are located in the same partition ($s_{j,k} = 1$).
+Edges energies are not realized where $j$ and $k$ do not belong to the
+same partition ($s_{j,k} = 0$):
+
+``` math
+\epsilon_{i} = \displaystyle\sum_{j,k \in L}\, \epsilon_{j,k}\,s_{j,k}
+```
+
+Potential and realized edge-level energies are in turn affected by a
+constant ($\beta_0$) and a set of edge-level attributes
+$\textbf{x}_{j,k}$ that are weighted by a parameter vector $\beta$
+
+``` math
+\epsilon_{j,k} = \beta_0 + \beta\, \textbf{x}_{j,k}
+```
+
+The empirical goal of the PSPM is it to estimate parameters $\beta_0$
+and $\beta$ from observed data. To that intent, the PSPM uses a maximum
+composite likelihood approach. Uncertainty estimates can be derived via
+a parametric bootstrap that samples partitionings with a given set of
+$\beta_0$ and $\beta$ parameters and then fits the model on the sampled
+partitionings.
 
 ## Installation
 
@@ -61,7 +102,7 @@ library(igraph)
 pspm_set_seed(1)
 ```
 
-## Handling a toy lattice
+## Setting up and handling a toy lattice
 
 ``` r
 # Make mock PSPM Object with a sampled partitioning
@@ -76,7 +117,9 @@ sl$plot_partitioning(edge_predictor = 1,
                      main = "A Toy Lattice")
 ```
 
-![](README_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+## PSPM to igraph conversion
 
 ``` r
 # Transform PSPM to igraph
