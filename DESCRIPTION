@@ -8,6 +8,14 @@ Maintainer: Carl Muller-Crepon <c.a.muller-crepon@lse.ac.uk>
 Description: Simulation and estimation for spatial partitions. 
 License: file LICENSE
 Encoding: UTF-8
+Imports: reticulate,
+  igraph,
+  R6,
+  maxLik,
+  Matrix,
+  infotheo,
+  sp
+RoxygenNote: 7.2.2
 Config/reticulate:
   list(
     packages = list(
@@ -19,11 +27,3 @@ Config/reticulate:
       list(package = "collections", pip = TRUE)
     )
   )
-Imports: reticulate,
-  igraph,
-  R6,
-  maxLik,
-  Matrix,
-  infotheo,
-  sp
-RoxygenNote: 7.2.2
