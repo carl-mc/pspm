@@ -17,6 +17,7 @@ abstractmethod <- NULL
   for(m in modules){
     have_m <- py_module_available(m)
     if(!have_m){
+      print(paste("Installing python module", m))
       reticulate::py_install(m)
     }
   }
