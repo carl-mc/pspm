@@ -12,13 +12,13 @@ abstractmethod <- NULL
     stop("Must use Python 3.")
   }
   
-  # Install python modules if not et installed
+  # Message to install python modules if not yet installed
   modules <- c("scipy",  "abc", "numpy", "networkx", "typing", "typing", "collections")
   for(m in modules){
     have_m <- py_module_available(m)
     if(!have_m){
-      print(paste("Installing python module", m))
-      reticulate::py_install(m)
+      print(warning(paste("Please install python module", m)))
+      # reticulate::py_install(m)
     }
   }
   
