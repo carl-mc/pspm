@@ -63,6 +63,10 @@ install_github(repo = "carl-mc/pspm")
 the pspm package heavily builds on the igraph library which is used to handle the underlying network data and allows user-friendly data manipulation. Since random sampling plays an important role during sampling, it is recommended to set a random seed in R and python. `pspm_set_seed()` achieves just that. 
 
 ```{r, eval = T, warning=FALSE, message=F}
+# If multiple python versions installed, point reticulate to python 3.x
+your_python_path <- '/usr/bin/python3' ## customize to your machine!
+Sys.setenv(RETICULATE_PYTHON = your_python_path)
+
 # Packages
 library(pspm)
 library(igraph)

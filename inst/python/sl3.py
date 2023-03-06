@@ -19,7 +19,7 @@ class SpatialLattice:
 
     def __init__(self, A: np.ndarray, Z: List[np.ndarray], X: np.ndarray):
         self.N = A.shape[0]
-        self.g = nx.from_numpy_matrix(A)
+        self.g = nx.from_numpy_array(A)
         self.L = len(Z)
         self.Z = Z
         self.P = X.shape[1]
