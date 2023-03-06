@@ -14,7 +14,10 @@ Imports: reticulate,
   maxLik,
   Matrix,
   infotheo,
-  sp
+  sp, 
+  doParallel,
+  foreach,
+  parallel
 RoxygenNote: 7.2.2
 Config/reticulate:
   list(
