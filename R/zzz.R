@@ -7,11 +7,11 @@ PartitionModel <- NULL
 abstractmethod <- NULL
 .onLoad <- function(libname, pkgname){
   
-  # Check whether reticulate works on python 3
-  if(basename(py_config()$python) != "python3"){
-    stop("You must use Python 3.")
-  }
-  
+  # # Check whether reticulate works on python 3
+  # if(basename(py_config()$python) != "python3"){
+  #   stop("You must use Python 3.")
+  # }
+  # 
   # Message to install python modules if not yet installed
   modules <- c("scipy",  "abc", "numpy", "networkx", "typing", "typing", "collections")
   for(m in modules){
