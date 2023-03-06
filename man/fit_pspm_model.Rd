@@ -58,3 +58,9 @@ Returns a MaxLik model object.
 \description{
 Fit a PSPM Model on a list of graphs
 }
+\details{
+Fits a pspm model using the Maximum Composite Likelihood approach 
+outlined in Müller-Crepon, Schvitz, and Cederman (2023). More sets of \code{model_type} 
+may be added in the future to allow the application of the model for more constrained / different 
+sets of partitionings.
+}

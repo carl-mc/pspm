@@ -15,10 +15,10 @@
 #' Type of likelihood used. Only \code{"composite_log_likelihood"} 
 #' @param force_contiguous Whether to force partitions encoded by y to be contiguous. 
 #' @param na.rm Flag to remove vertices and edges with missing data from the graph. 
-#'
+#' @import  igraph
+#' @importFrom stats na.omit model.frame as.formula
 #' @return A clean graph to estimate a PSPM
-#'
-#' @examples
+#' @export
 model_graphframe <- function(g, formula, 
                              network_stat = list(),
                              force_contiguous = T, na.rm = F){
@@ -80,7 +80,7 @@ model_graphframe <- function(g, formula,
   stopifnot(all.vars(formula) %in% colnames(edge.df))
   
   # Disentangle formula
-  model.df <- model.frame(formula, edge.df)
+  model.df <- stats::model.frame(formula, edge.df)
   
   # Transfer back to graph edges
   for(v in colnames(model.df)[-1]){
@@ -98,7 +98,7 @@ model_graphframe <- function(g, formula,
   ## Finalize
   y.df <- data.frame(vertex_attr(g, all.vars(formula)[1]))
   colnames(y.df) <- all.vars(formula)[1]
-  y.df <-  model.frame(as.formula(paste("~", as.character(formula)[2])), y.df)
+  y.df <-  stats::model.frame(stats::as.formula(paste("~", as.character(formula)[2])), y.df)
   vertex_attr(g, as.character(formula)[2]) <- y.df[, as.character(formula)[2]]
   
   # Save outcome and predictors on graph
@@ -118,10 +118,10 @@ model_graphframe <- function(g, formula,
 #' @param graph igraph object
 #' @param part_attr Vertex attribute that encodes partition membership.
 #'
-#' @return Numeric vector that encodes vertices partition IDs for contiguous partitions. 
-#' @import igraph
-#'
-#' @examples
+#' @return Numeric vector that encodes vertices partition IDs for contiguous partitions.
+#' @import  igraph
+#' @importFrom stats na.omit 
+#' @export
 recode_contig_partitioning <- function(graph, part_attr){
   
   # Input partitionings
@@ -132,9 +132,10 @@ recode_contig_partitioning <- function(graph, part_attr){
   V(graph)$tempid <- seq_along(V(graph))
   
   # Loop to detect connected components by partition
-  for(i in na.omit(unique(part.input))){
+  for(i in stats::na.omit(unique(part.input))){
     # Subset graph
-    temp.g <- induced_subgraph(graph, vid = which(part.input == i & !is.na(part.input)))
+    temp.g <- induced_subgraph(graph, 
+                               vids = which(part.input == i & !is.na(part.input)))
     
     # Connected components
     concomp <- clusters(temp.g)
@@ -179,10 +180,14 @@ recode_contig_partitioning <- function(graph, part_attr){
 #'
 
 #' 
-#' @details 
+#' @details Fits a pspm model using the Maximum Composite Likelihood approach 
+#' outlined in Müller-Crepon, Schvitz, and Cederman (2023). More sets of \code{model_type} 
+#' may be added in the future to allow the application of the model for more constrained / different 
+#' sets of partitionings. 
 #'      
 #' 
-#' @import infotheo
+#' @import igraph
+#' 
 #' @export
 fit_pspm_model <- function(formula, g_ls, 
                             network_stat = list(),
@@ -306,14 +311,14 @@ fit_pspm_model <- function(formula, g_ls,
 #' @return If \code{return_boot = TRUE}, the full distribution across all bootstrap iterations, 
 #' otherwise their mean.
 #' 
-#' @details Inputs are defined as
-#'      \code{learn_obj}: As returned from \code{learn_obj$bootstrap_composite_log_likelihood} or 
-#'      \code{learn_obj$par_bootstrap_composite_log_likelihood}
+#' @param learn_obj \code{learn_obj} with bootstrapped samples internally safed, 
+#' as returned from \code{learn_obj$bootstrap_composite_log_likelihood} or 
+#'  \code{learn_obj$par_bootstrap_composite_log_likelihood}
 #'      
-#'      \code{fun}: Function that computes fit statistic for partitionings, e.g. \code{fit_mutualinfo}
-#'      
+#' @param fun Function that computes fit statistic for partitionings, e.g. \code{fit_mutualinfo}
+#' @param return_boot Return full distribution of fit statistic, one for each 
+#' sampled partitioning.
 #' 
-#' @import infotheo
 #' @export
 get_fit_statistic <- function(learn_obj, 
                               fun, 
@@ -324,7 +329,8 @@ get_fit_statistic <- function(learn_obj,
   
   ## Fit statistics
   boot.stat <- c()
-  for(i in seq_len(n_boot_iter)){
+  n_samples <- length(learn_obj$samples_cache)
+  for(i in seq_len(n_samples)){
     stat_vec <- c()
     for (m in 1:learn_obj$M) {
       stat_vec <- fun(learn_obj$samples_cache[[i]][[m]],
@@ -340,18 +346,18 @@ get_fit_statistic <- function(learn_obj,
   }
 }
 
-#' @name fit_mutualinfo
+
+
 #' @title Computes the normalized mutual information
 #' 
 #' @return A number between 0 and 1.
 #' 
-#' @details Inputs are defined as
-#'      \code{X}: Predicted partitioning
-#'      
-#'      \code{Y}: Observed partitioning
-#'      
+#' @param X Predicted partitioning
+#'
+#' @param Y Observed partitioning
+#'
 #' 
-#' @import infotheo
+#' @importFrom  infotheo mutinformation entropy
 #' @export
 fit_mutualinfo <- function(X, Y){
   infotheo::mutinformation(X, Y) /  sqrt(infotheo::entropy(Y)*infotheo::entropy(X))

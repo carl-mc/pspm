@@ -22,13 +22,14 @@ pspm_set_seed <- function(seed) {
 #' @param bpoint Point estimate
 #' @param alpha Confidence level
 #' @keywords internal
+#' @importFrom stats quantile
 get_basic_ci <- function(bmat, bpoint, alpha) {
   ci_mat <- matrix(NA, 2, ncol(bmat))
   for (k in 1:ncol(bmat)) {
     p <- bpoint[k]
     b <- bmat[,k]
-    ci_mat[,k] <- c(2*p - quantile(b, 1 - alpha/2),
-                    2*p - quantile(b, alpha/2))
+    ci_mat[,k] <- c(2*p - stats::quantile(b, 1 - alpha/2),
+                    2*p - stats::quantile(b, alpha/2))
   }
   return(ci_mat)
 }
@@ -40,12 +41,13 @@ get_basic_ci <- function(bmat, bpoint, alpha) {
 #' @param bpoint Point estimate
 #' @param alpha Confidence level
 #' @keywords internal
+#' @importFrom stats quantile
 get_percentile_ci <- function(bmat, alpha) {
   ci_mat <- matrix(NA, 2, ncol(bmat))
   for (k in 1:ncol(bmat)) {
     b <- bmat[,k]
-    ci_mat[,k] <- c(quantile(b, alpha/2),
-                    quantile(b, 1-alpha/2))
+    ci_mat[,k] <- c(stats::quantile(b, alpha/2),
+                    stats::quantile(b, 1-alpha/2))
   }
   return(ci_mat)
 }
@@ -134,12 +136,10 @@ reset_pspmlearn <- function(x){
 #' @name PSPM
 #' @title Probabilistic Spatial Partition Model Data Container
 #' 
-#' @description Data container for a spatial network to be analysed with a Probabilistic Spatial Partition Model. 
-#' Objects of this class are the main input to create a PSPMLearn object, 
+#' @description R6 Class that acts as a data container for a spatial network to be
+#' analysed with a Probabilistic Spatial Partition Model. 
+#' Objects of this class are the main input to create a \code{PSPMLearn} object, 
 #' which allows to fit the Probabilistic Partition Model to derive parameter estimates. 
-#' 
-#' @details Write about details here.
-#' 
 #' 
 #' @import R6
 #' reticulate
@@ -231,9 +231,6 @@ PSPM <- R6Class("PSPM",
                      #' @param force_contiguous Flag to enforce contiguity of the graph 
                      #' and throw an error if that is not given. 
                      #' @param verbose Flag for verbosity. 
-                     #' 
-                     #' @examples
-                     #' 
                      initialize = function(Y, Z, X = NULL, A, 
                                            net_stats = c("LatticeNeighborsNS"),
                                            beta = NULL, points = NULL, force_contiguous=TRUE, verbose = FALSE) {
@@ -281,9 +278,6 @@ PSPM <- R6Class("PSPM",
                       #' 
                       #' @param beta Numeric vector with a constant and 
                       #' one entry per edge-level predictor, in this order
-                      #'
-                      #'
-                      #' @examples
                      set_beta = function(beta) {
                        # Sets beta and updates D (the predictor matrix)
                        stopifnot(length(beta) == length(unlist(self$pm$parameters)))
@@ -304,8 +298,6 @@ PSPM <- R6Class("PSPM",
                      #' 
                      #' @returns Parameter vector, a numeric vector with a constant and 
                      #' one entry per edge-level predictor, in this order
-                     #'
-                     #' @examples
                      get_beta = function() {
                        return(self$beta)
                      },
@@ -317,8 +309,6 @@ PSPM <- R6Class("PSPM",
                      #'  to plot different edges as different line types. 
                      #'  Only binary edge predictors (dotted line if 1, straight otherwise) supported at the moment.
                      #' @param ... Options passed to plot.igraph()
-                     #'  
-                     #' @examples
                      plot_partitioning = function(edge_predictor = NULL, ...) {
                        # Plots the current lattice partitioning
                        
@@ -375,8 +365,6 @@ PSPM <- R6Class("PSPM",
                       #' If \code{return_full = FALSE}, the partitioning of the PSPM object
                       #' is updated internally. 
                       #' 
-                      #'
-                      #' @examples
                        sample = function(burnin = 0, return_full = FALSE) {
                        # Samples a new lattice partitioning via Gibbs sampling.
                        
@@ -407,8 +395,6 @@ PSPM <- R6Class("PSPM",
                      #' @param beta Beta parameters for which to query log composite likelihood
                      #'
                      #' @return Returns log composite likelihood
-                     #' 
-                     #' @examples
                      get_composite_log_likelihood = function(beta) {
                        # Returns log pseudo likelihood (see Sutton and McCullum 2011: p. 345)
                        
@@ -430,14 +416,11 @@ PSPM <- R6Class("PSPM",
 #' @name PSPMLearn
 #' @title Probabilistic Spatial Partition Model Fitter
 #' 
-#' @description Class to fit the parameters of a Probabilistic Spatial Partition Model across
-#' a set of PSPM objects. 
-#' 
-#' @details 
+#' @description R6 class to fit the parameters of a Probabilistic Spatial Partition Model across
+#' a set of PSPM objects following the methods described in Müller-Crepon, Schvitz and Cederman (2023). 
 #' 
 #' @return Returns a PSPMLearn object.
 #' 
-#' @details 
 #' 
 #' @import R6
 #' reticulate
@@ -475,7 +458,6 @@ PSPMLearn <- R6Class("PSPMLearn",
                           #' @return A PSPMLearn object
                           #' @export
                           #'
-                          #' @examples
                           initialize = function(pspm_ls, sigma2 = 10) {
                             
                             # Set the list of instances
@@ -495,8 +477,6 @@ PSPMLearn <- R6Class("PSPMLearn",
                           #'
                           #' 
                           #' @export
-                          #'
-                          #' @examples
                           reset = function(){
                             
                             # Re-Initialize partition graphs in pspm.ls
@@ -514,7 +494,6 @@ PSPMLearn <- R6Class("PSPMLearn",
                           #' 
                           #' @export
                           #'
-                          #' @examples
                           reset_beta = function(beta = NULL) {
                             ## Resets the beta parameter vector of all instances
                             # beta: Optional argument; beta set to zero vector if missing
@@ -559,8 +538,6 @@ PSPMLearn <- R6Class("PSPMLearn",
                           #'
                           #' @return Numeric composite log likelihood penalized by \code{sum(beta^2)/(2*sigma2)}
                           #' @export
-                          #'
-                          #' @examples
                           composite_log_likelihood = function(beta) {
                             ## Returns composite likelihood
                             
@@ -597,8 +574,6 @@ PSPMLearn <- R6Class("PSPMLearn",
                           #' @import maxLik
                           #' 
                           #' @export
-                          #'
-                          #' @examples
                           fit_composite_log_likelihood = function(beta_init = NULL, 
                                                                     set_cache = TRUE, 
                                                                     clear_cache = TRUE) {
@@ -654,8 +629,6 @@ PSPMLearn <- R6Class("PSPMLearn",
                           #' possibly sampled partitionings. 
                           #' 
                           #' @export
-                          #'
-                          #' @examples
                           bootstrap_composite_log_likelihood = function(n_boot_iter = 100, 
                                                                         burnin = 1e1,
                                                                      ci_level = 0.95,
@@ -767,8 +740,6 @@ PSPMLearn <- R6Class("PSPMLearn",
                           #' possibly sampled partitionings. 
                           #' 
                           #' @export
-                          #'
-                          #' @examples
                           par_bootstrap_composite_log_likelihood = function(cl = NULL, n_boot_iter = 100, burnin = 1e2,
                                                                          ci_level = 0.95, 
                                                                          return_sims = FALSE, cache_samples = T){

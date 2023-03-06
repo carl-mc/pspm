@@ -7,6 +7,16 @@
 \usage{
 get_fit_statistic(learn_obj, fun, return_boot = FALSE)
 }
+\arguments{
+\item{learn_obj}{\code{learn_obj} with bootstrapped samples internally safed, 
+as returned from \code{learn_obj$bootstrap_composite_log_likelihood} or 
+ \code{learn_obj$par_bootstrap_composite_log_likelihood}}
+
+\item{fun}{Function that computes fit statistic for partitionings, e.g. \code{fit_mutualinfo}}
+
+\item{return_boot}{Return full distribution of fit statistic, one for each 
+sampled partitioning.}
+}
 \value{
 If \code{return_boot = TRUE}, the full distribution across all bootstrap iterations, 
 otherwise their mean.
@@ -14,11 +24,4 @@ otherwise their mean.
 \description{
 Compute any fit statistic for predicted partitionings stored in a learn object
 (produced during parametric bootstrap).
-}
-\details{
-Inputs are defined as
-     \code{learn_obj}: As returned from \code{learn_obj$bootstrap_composite_log_likelihood} or 
-     \code{learn_obj$par_bootstrap_composite_log_likelihood}
-     
-     \code{fun}: Function that computes fit statistic for partitionings, e.g. \code{fit_mutualinfo}
 }

@@ -7,6 +7,13 @@ with side length N_sqrd.}
 \usage{
 is_moore_neighbor(i, j, N_sqrd)
 }
+\arguments{
+\item{i}{Node i}
+
+\item{j}{Node j}
+
+\item{N_sqrd}{Side-length of grid}
+}
 \description{
 Checks whether nodes i and j are Moore neighbors on a square grid
 with side length N_sqrd.

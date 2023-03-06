@@ -1,5 +1,9 @@
 
 #' @name is_von_neumann_neighbor
+#' @param i Node i
+#' @param j Node j
+#' @param N_sqrd Side-length of grid
+#'
 #' @title Checks whether nodes i and j are von Neumann neighbors on a square grid
 #' with side length N_sqrd.
 #' @keywords internal
@@ -31,6 +35,10 @@ is_von_neumann_neighbor <- function(i, j, N_sqrd) {
   return(FALSE)
 }
 
+#' @param i Node i
+#' @param j Node j
+#' @param N_sqrd Side-length of grid
+#'
 #' @name is_moore_neighbor
 #' @title Checks whether nodes i and j are Moore neighbors on a square grid
 #' with side length N_sqrd.
@@ -61,7 +69,10 @@ is_moore_neighbor <- function(i, j, N_sqrd) {
 #' @name is_hexagonal_neighbor
 #' @title Checks whether nodes i and j are neighbors on a square grid
 #' with hexagonally sampled points
-#' with side length N_sqrd.
+#' with side length N_sqrd
+#' @param i Node i
+#' @param j Node j
+#' @param N_sqrd Side-length of grid.
 #' @keywords internal
 is_hexagonal_neighbor <- function(i, j, N_sqrd) {
   # Checks whether nodes i and j are neighbors on a square grid with hexagonally sampled points
@@ -101,6 +112,10 @@ is_hexagonal_neighbor <- function(i, j, N_sqrd) {
 #' @name is_separated_by_col
 #' @title Checks whether units i and k are separated by sep_col in a 
 #' grid with side length N_sqrd
+#' @param i Node i
+#' @param j Node j
+#' @param N_sqrd Side-length of grid
+#' @param sep_col Column id to separate grid into two parts.
 #' @keywords internal
 is_separated_by_col <- function(i, j, N_sqrd, sep_col) {
   # Checks whether units i and k are separated by sep_col in a
@@ -129,6 +144,10 @@ is_separated_by_col <- function(i, j, N_sqrd, sep_col) {
 
 #' @name generate_square_grid_lattice
 #' @title Returns adjacency matrix for square lattice of side-length \code{N_sqrd}
+#'
+#' @param dep_structure Dependency structure. One of \code{c("von_neumann", "moore", "hexagonal")}.
+#' @param N_sqrd Side-length of grid
+#'
 #' @export
 generate_square_grid_lattice <- function(N_sqrd, dep_structure = c("von_neumann", "moore", "hexagonal")) {
   # Returns adjacency matrix for square grid lattice
@@ -162,22 +181,21 @@ generate_square_grid_lattice <- function(N_sqrd, dep_structure = c("von_neumann"
 #' 
 #' @return A PSPM object based on sqare lattice of side-length \code{N_sqrd}.
 #' 
-#' @details Inputs are defined as
-#'      \code{N_sqrd}: Integer; side length of the lattice. 
+#' @param N_sqrd Integer; side length of the lattice. 
 #'      
-#'      \code{beta0}: Baseline repulsion (positive) or attraction (negative) among nodes.  
+#' @param beta0 Baseline repulsion (positive) or attraction (negative) among nodes.  
 #'      
-#'      \code{beta}: Effect of predictors. 
+#' @param beta Effect of predictors. 
 #'      Each predictor separates the lattice into a left and right part. Parts do not align.
 #'      
-#'      \code{dep_structure}: Dependency structure. 
+#' @param dep_structure Dependency structure. 
 #'      One of \code{c("von_neumann", "moore", "hexagonal")}
 #'      
-#'      \code{burnin}: Length of burn-in period during sampling. 
+#' @param burnin Length of burn-in period during sampling. 
 #'      
-#'      \code{temperatures}: Not used. For potential parallel tempering.
+#' @param temperatures Not used. For potential parallel tempering.
 #'      
-#'      \code{swap_iter}: Not used. For potential parallel tempering with swapping. 
+#' @param swap_iter Not used. For potential parallel tempering with swapping. 
 #'      
 #' 
 #' @export

@@ -15,23 +15,29 @@ igraph2PSPM(
   force_contiguous = TRUE
 )
 }
+\arguments{
+\item{g}{An igraph}
+
+\item{outcome_name}{Vertex-level variable names as strings that encodes partition IDs, the main outcome.}
+
+\item{edge_pred_names}{Edge-level variable names as strings that encode the predictors}
+
+\item{network_stat}{List of supra-edge network statistics. 
+Currently not used. For future backward compatibility.}
+
+\item{vertex_pred_names}{List of vertex-level predictors. 
+Currently not used. For future backward compatibility.}
+
+\item{vertex_coords}{Vector of x and y coordinates of vertices. 
+If provided, saves coordinates of vertices with PSPM object as \code{sp::SpatialPoints}.}
+
+\item{verbose}{Verbosity}
+
+\item{force_contiguous}{Force contiguous partitioning.}
+}
 \value{
 Returns a PSPM object.
 }
 \description{
 Cast igraph as PSPM object
-}
-\details{
-Inputs are defined as
-     \code{g}: An igraph
-     \code{outcome_name}: Vertex-level variable names as strings that encodes partition IDs, the main outcome. 
-     \code{edge_pred_names}: Edge-level variable names as strings that encode the predictors
-     \code{network_stat}: List of supra-edge network statistics. 
-     Currently not used. For future backward compatibility. 
-     \code{vertex_pred_names}: List of vertex-level predictors. 
-     Currently not used. For future backward compatibility. 
-     \code{vertex_coords}: Vector of x and y coordinates of vertices. 
-     If provided, saves coordinates of vertices with PSPM object as \code{sp::SpatialPoints}.
-     \code{verbose}: Verbosity
-     \code{force_contiguous}: Force contiguous partitioning.
 }

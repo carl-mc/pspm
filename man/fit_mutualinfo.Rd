@@ -6,15 +6,14 @@
 \usage{
 fit_mutualinfo(X, Y)
 }
+\arguments{
+\item{X}{Predicted partitioning}
+
+\item{Y}{Observed partitioning}
+}
 \value{
 A number between 0 and 1.
 }
 \description{
 Computes the normalized mutual information
-}
-\details{
-Inputs are defined as
-     \code{X}: Predicted partitioning
-     
-     \code{Y}: Observed partitioning
 }

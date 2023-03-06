@@ -77,12 +77,20 @@ model on the sampled partitionings.
 You can directly download and install the pspm package from GitHub.
 Before doing so, please make sure that you have
 [Python3](https://www.python.org/downloads/) installed, which the
-package heavily relies on. Upon installation, the package automatically
-installs necessary python dependencies via the
+package heavily relies on. For simplicity and as shown below, you can
+also install python and necessary modules from within R, using ’s and
+functions. Upon installation, the package automatically installs
+necessary python dependencies via the
 [reticulate](https://cran.r-project.org/web/packages/reticulate/index.html)
 R-package.
 
 ``` r
+# # Get python ready if not yet installed
+# library(reticulate)
+# reticulate::install_miniconda()
+# reticulate::py_install(c("scipy","networkx"))
+
+# Download pspm package
 library(devtools)
 install_github(repo = "carl-mc/pspm")
 ```
@@ -96,6 +104,10 @@ sampling, it is recommended to set a random seed in R and python.
 `pspm_set_seed()` achieves just that.
 
 ``` r
+# # If multiple python versions installed, point reticulate to python 3.x
+# your_python_path <- '/usr/bin/python3' ## customize to your machine!
+# Sys.setenv(RETICULATE_PYTHON = your_python_path)
+
 # Packages
 library(pspm)
 library(igraph)

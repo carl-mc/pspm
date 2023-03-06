@@ -9,6 +9,11 @@ generate_square_grid_lattice(
   dep_structure = c("von_neumann", "moore", "hexagonal")
 )
 }
+\arguments{
+\item{N_sqrd}{Side-length of grid}
+
+\item{dep_structure}{Dependency structure. One of \code{c("von_neumann", "moore", "hexagonal")}.}
+}
 \description{
 Returns adjacency matrix for square lattice of side-length \code{N_sqrd}
 }

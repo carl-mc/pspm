@@ -8,12 +8,10 @@ Parameter vector, a numeric vector with a constant and
 one entry per edge-level predictor, in this order
 }
 \description{
-Data container for a spatial network to be analysed with a Probabilistic Spatial Partition Model. 
-Objects of this class are the main input to create a PSPMLearn object, 
+R6 Class that acts as a data container for a spatial network to be
+analysed with a Probabilistic Spatial Partition Model. 
+Objects of this class are the main input to create a \code{PSPMLearn} object, 
 which allows to fit the Probabilistic Partition Model to derive parameter estimates.
-}
-\details{
-Write about details here.
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -153,7 +151,8 @@ Plot partitioning of PSPM object as a labelled graph.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{edge_predictor}}{ID or name of edge predictor to include
-to plot different edge types. Only binary edge predictors supported at the moment.}
+to plot different edges as different line types. 
+Only binary edge predictors (dotted line if 1, straight otherwise) supported at the moment.}
 
 \item{\code{...}}{Options passed to plot.igraph()}
 }

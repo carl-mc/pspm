@@ -4,13 +4,20 @@
 \alias{is_hexagonal_neighbor}
 \title{Checks whether nodes i and j are neighbors on a square grid
 with hexagonally sampled points
-with side length N_sqrd.}
+with side length N_sqrd}
 \usage{
 is_hexagonal_neighbor(i, j, N_sqrd)
+}
+\arguments{
+\item{i}{Node i}
+
+\item{j}{Node j}
+
+\item{N_sqrd}{Side-length of grid.}
 }
 \description{
 Checks whether nodes i and j are neighbors on a square grid
 with hexagonally sampled points
-with side length N_sqrd.
+with side length N_sqrd
 }
 \keyword{internal}

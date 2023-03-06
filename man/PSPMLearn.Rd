@@ -7,8 +7,8 @@
 Returns a PSPMLearn object.
 }
 \description{
-Class to fit the parameters of a Probabilistic Spatial Partition Model across
-a set of PSPM objects.
+R6 class to fit the parameters of a Probabilistic Spatial Partition Model across
+a set of PSPM objects following the methods described in Müller-Crepon, Schvitz and Cederman (2023).
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}

@@ -14,27 +14,26 @@ generate_grid_data(
   swap_iter = NULL
 )
 }
+\arguments{
+\item{N_sqrd}{Integer; side length of the lattice.}
+
+\item{beta0}{Baseline repulsion (positive) or attraction (negative) among nodes.}
+
+\item{beta}{Effect of predictors. 
+Each predictor separates the lattice into a left and right part. Parts do not align.}
+
+\item{dep_structure}{Dependency structure. 
+One of \code{c("von_neumann", "moore", "hexagonal")}}
+
+\item{burnin}{Length of burn-in period during sampling.}
+
+\item{temperatures}{Not used. For potential parallel tempering.}
+
+\item{swap_iter}{Not used. For potential parallel tempering with swapping.}
+}
 \value{
 A PSPM object based on sqare lattice of side-length \code{N_sqrd}.
 }
 \description{
 Generates square lattice with sampled partitioning
-}
-\details{
-Inputs are defined as
-     \code{N_sqrd}: Integer; side length of the lattice. 
-     
-     \code{beta0}: Baseline repulsion (positive) or attraction (negative) among nodes.  
-     
-     \code{beta}: Effect of predictors. 
-     Each predictor separates the lattice into a left and right part. Parts do not align.
-     
-     \code{dep_structure}: Dependency structure. 
-     One of \code{c("von_neumann", "moore", "hexagonal")}
-     
-     \code{burnin}: Length of burn-in period during sampling. 
-     
-     \code{temperatures}: Not used. For potential parallel tempering.
-     
-     \code{swap_iter}: Not used. For potential parallel tempering with swapping.
 }

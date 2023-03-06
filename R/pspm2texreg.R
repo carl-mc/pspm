@@ -17,11 +17,9 @@
 #' @param ... Additional inputs taken by texreg (latex) / screenreg (text) / htmlreg (html), 
 #' depending on \code{type}
 #'
-#' @return
+#' @return A character vector containing the table (code). 
 #' @export
 #' @import texreg
-#'
-#' @examples
 pspm2table <- function(model.ls, type = "latex", 
                         add.stats = c(Edges = "N_edges"),
                         custom.gof.rows = NULL, 

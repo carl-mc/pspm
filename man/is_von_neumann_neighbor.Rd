@@ -7,6 +7,13 @@ with side length N_sqrd.}
 \usage{
 is_von_neumann_neighbor(i, j, N_sqrd)
 }
+\arguments{
+\item{i}{Node i}
+
+\item{j}{Node j}
+
+\item{N_sqrd}{Side-length of grid}
+}
 \description{
 Checks whether nodes i and j are von Neumann neighbors on a square grid
 with side length N_sqrd.

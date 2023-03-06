@@ -1,7 +1,7 @@
 
 #' @title PSPM Parametric Bootstrap
 #' 
-#' Returns confidence intervals and full set of 
+#' @description Returns confidence intervals and full set of 
 #' bootstrapped estimates from a parametric bootstrap of a fitted PSPM model. 
 #'
 #' @param model A model as returned by fit_pspm_model(..., return_pspm = TRUE). 
@@ -26,8 +26,6 @@
 #' possibly sampled partitionings. 
 #' 
 #' @export
-#'
-#' @examples
 bootstrap_pspm <- function(model = NULL, 
                            PSPMLearn = NULL,
                            cl = NULL,

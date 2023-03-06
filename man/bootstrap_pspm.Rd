@@ -2,10 +2,7 @@
 % Please edit documentation in R/bootstrap_pspm.R
 \name{bootstrap_pspm}
 \alias{bootstrap_pspm}
-\title{Parametric bootstrap
-
-Returns confidence intervals and full set of 
-bootstrapped estimates from a parametric bootstrap of a fitted PSPM model.}
+\title{PSPM Parametric Bootstrap}
 \usage{
 bootstrap_pspm(
   model = NULL,
@@ -51,8 +48,6 @@ A list with estimated parameters, confidence intervals, and
 possibly sampled partitionings.
 }
 \description{
-Parametric bootstrap
-
 Returns confidence intervals and full set of 
 bootstrapped estimates from a parametric bootstrap of a fitted PSPM model.
 }

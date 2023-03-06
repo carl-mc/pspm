@@ -7,6 +7,15 @@ grid with side length N_sqrd}
 \usage{
 is_separated_by_col(i, j, N_sqrd, sep_col)
 }
+\arguments{
+\item{i}{Node i}
+
+\item{j}{Node j}
+
+\item{N_sqrd}{Side-length of grid}
+
+\item{sep_col}{Column id to separate grid into two parts.}
+}
 \description{
 Checks whether units i and k are separated by sep_col in a 
 grid with side length N_sqrd

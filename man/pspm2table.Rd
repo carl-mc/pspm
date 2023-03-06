@@ -7,7 +7,7 @@
 pspm2table(
   model.ls,
   type = "latex",
-  add.stats = c("N_groups", "N_edges", "N_instances", "MutInfo"),
+  add.stats = c(Edges = "N_edges"),
   custom.gof.rows = NULL,
   stars = c(0.01, 0.05, 0.1),
   bootci = F,
@@ -16,11 +16,11 @@ pspm2table(
 )
 }
 \arguments{
-\item{model.ls}{List of models returned from \code{fit_pspm_model} or \code{PSPMLearn$fit_composite_log_likelihood}}
+\item{model.ls}{List of models returned from \code{fit_pspm_model}.}
 
 \item{type}{One of latex, text or html}
 
-\item{add.stats}{Statistics to add.}
+\item{add.stats}{Statistics to add. Can be one of c("N_groups", "N_edges", "N_instances","MutInfo")}
 
 \item{custom.gof.rows}{Add custom rows.}
 
@@ -32,6 +32,9 @@ pspm2table(
 
 \item{...}{Additional inputs taken by texreg (latex) / screenreg (text) / htmlreg (html), 
 depending on \code{type}}
+}
+\value{
+A character vector containing the table (code).
 }
 \description{
 Builds directly on Philip Leifeld's texreg package.

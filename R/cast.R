@@ -65,18 +65,17 @@ PSPM2igraph <- function(pspm) {
 #' 
 #' @return Returns a PSPM object.
 #' 
-#' @details Inputs are defined as
-#'      \code{g}: An igraph
-#'      \code{outcome_name}: Vertex-level variable names as strings that encodes partition IDs, the main outcome. 
-#'      \code{edge_pred_names}: Edge-level variable names as strings that encode the predictors
-#'      \code{network_stat}: List of supra-edge network statistics. 
+#' @param g An igraph
+#' @param outcome_name Vertex-level variable names as strings that encodes partition IDs, the main outcome. 
+#' @param edge_pred_names Edge-level variable names as strings that encode the predictors
+#' @param network_stat List of supra-edge network statistics. 
 #'      Currently not used. For future backward compatibility. 
-#'      \code{vertex_pred_names}: List of vertex-level predictors. 
+#' @param vertex_pred_names List of vertex-level predictors. 
 #'      Currently not used. For future backward compatibility. 
-#'      \code{vertex_coords}: Vector of x and y coordinates of vertices. 
+#' @param vertex_coords Vector of x and y coordinates of vertices. 
 #'      If provided, saves coordinates of vertices with PSPM object as \code{sp::SpatialPoints}.
-#'      \code{verbose}: Verbosity
-#'      \code{force_contiguous}: Force contiguous partitioning.
+#' @param verbose Verbosity
+#' @param force_contiguous Force contiguous partitioning.
 #' 
 #' @import sp
 #' igraph
