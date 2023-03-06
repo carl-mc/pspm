@@ -17,7 +17,8 @@ Imports: reticulate,
   sp, 
   doParallel,
   foreach,
-  parallel
+  parallel, 
+  texreg
 RoxygenNote: 7.2.2
 Config/reticulate:
   list(
