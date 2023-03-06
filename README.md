@@ -79,10 +79,14 @@ Before doing so, please make sure that you have
 [Python3](https://www.python.org/downloads/) installed, which the
 package heavily relies on. For simplicity and as shown below, you can
 also install python and necessary modules from within R, using ’s and
-functions. Upon installation, the package automatically installs
-necessary python dependencies via the
+functions.
+
+Upon installation and first usage, the package should automatically
+install all necessary python dependencies via the
 [reticulate](https://cran.r-project.org/web/packages/reticulate/index.html)
-R-package.
+R-package. If this is not the case, the user may see an error and have
+install the following modules manually: scipy, networkx, numpy, abc,
+typing, collections.
 
 ``` r
 # # Get python ready if not yet installed

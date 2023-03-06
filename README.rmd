@@ -50,7 +50,9 @@ The empirical goal of the PSPM is it to estimate parameters $\beta_0$ and $\beta
 
 ## Installation
 
-You can directly download and install the pspm package from GitHub. Before doing so, please make sure that you have [Python3](https://www.python.org/downloads/) installed, which the package heavily relies on. For simplicity and as shown below, you can also install python and necessary modules from within R, using \code{reticulate}'s \code{install_miniconda()} and \code{py_install()} functions. Upon installation, the package automatically installs necessary python dependencies via the [reticulate](https://cran.r-project.org/web/packages/reticulate/index.html) R-package. 
+You can directly download and install the pspm package from GitHub. Before doing so, please make sure that you have [Python3](https://www.python.org/downloads/) installed, which the package heavily relies on. For simplicity and as shown below, you can also install python and necessary modules from within R, using \code{reticulate}'s \code{install_miniconda()} and \code{py_install()} functions. 
+
+Upon installation and first usage, the package should automatically install all necessary python dependencies via the [reticulate](https://cran.r-project.org/web/packages/reticulate/index.html) R-package. If this is not the case, the user may see an error and have install the following modules manually: scipy, networkx, numpy, abc, typing, collections. 
 
 ```{r, eval = F}
 # # Get python ready if not yet installed
