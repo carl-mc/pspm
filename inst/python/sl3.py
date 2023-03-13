@@ -6,7 +6,7 @@ import numpy as np
 from scipy.special import logsumexp
 
 
-class SpatialLattice:
+class SpatialLattice:  
     # Encapsulates lattice and predictor info
     # Does not change during sampling or estimation
 
