@@ -58,7 +58,7 @@ Upon installation and first usage, the package should automatically install all 
 # # Get python ready if not yet installed
 # library(reticulate)
 # reticulate::install_miniconda()
-# reticulate::py_install(c("scipy","networkx"))
+# reticulate::py_install(c("scipy","networkx","abc","numpy","typing","collections"))
 
 # Download pspm package
 library(devtools)
