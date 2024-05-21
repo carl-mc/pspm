@@ -204,6 +204,10 @@ PSPM <- R6Class("PSPM",
                      #' List of network statistics. 
                      net_stats = c("LatticeNeighborsNS"), 
                      
+                     #' @field  net_stats.labs
+                     #' Vector of network statistic labels
+                     net_stats.labs = NULL, 
+                     
                      #' @field verbose 
                      #' Level of verbosity, binary flag. 
                      verbose = FALSE, 
@@ -256,6 +260,14 @@ PSPM <- R6Class("PSPM",
                        self$verbose = verbose
                        self$force_contiguous = force_contiguous
                        self$net_stats = net_stats
+                       if(any(net_stats != "LatticeNeighborsNS")){
+                         ns <- net_stats[net_stats != "LatticeNeighborsNS"]
+                         self$net_stats.labs = paste0(rep(ns, each = ncol(X)), ".",
+                                                      rep(colnames(X), length(ns)))
+                       } else {
+                         self$net_stats.labs = NULL
+                       }
+                      
 
                        # Initialize SpatialLattice
                        self$g <-  SpatialLattice(A, c(list(A), Z), 
@@ -284,8 +296,8 @@ PSPM <- R6Class("PSPM",
                        self$beta <- beta
                        
                        # Set name
-                       if(!is.null(self$Z.labs)){
-                         names(self$beta) <- c("Constant", self$Z.labs)
+                       if(!is.null(self$Z.labs) | !is.null(self$net_stats.labs)){
+                         names(self$beta) <- c("Constant", self$Z.labs, self$net_stats.labs)
                        }
                        
                        # Update pm object
@@ -700,10 +712,10 @@ PSPMLearn <- R6Class("PSPMLearn",
                             ci_perc_mat <- get_percentile_ci(beta_boot_mat, alpha)
                             
                             # Labels
-                            if(!is.null(self$pspm_ls[[1]]$Z.labs)){
-                              colnames(beta_boot_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs)
-                              colnames(ci_basic_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs)
-                              colnames(ci_perc_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs)
+                            if(!is.null(self$pspm_ls[[1]]$Z.labs) | !is.null(self$pspm_ls[[1]]$net_stats.labs)){
+                              colnames(beta_boot_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs, self$pspm_ls[[1]]$net_stats.labs)
+                              colnames(ci_basic_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs, self$pspm_ls[[1]]$net_stats.labs)
+                              colnames(ci_perc_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs, self$pspm_ls[[1]]$net_stats.labs)
                               rownames(ci_basic_mat) <- rownames(ci_perc_mat) <- c("LowerBound", "UpperBound")
                             }
                             
@@ -828,9 +840,9 @@ PSPMLearn <- R6Class("PSPMLearn",
                               }
                               
                               # Labels
-                              if(!is.null(self$pspm_ls[[1]]$Z.labs)){
-                                colnames(beta_boot_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs)
-                                colnames(ci_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs)
+                              if(!is.null(self$pspm_ls[[1]]$Z.labs) | !is.null(self$pspm_ls[[1]]$net_stats.labs)){
+                                colnames(beta_boot_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs, self$pspm_ls[[1]]$net_stats.labs)
+                                colnames(ci_mat) <- c("Constant", self$pspm_ls[[1]]$Z.labs, self$pspm_ls[[1]]$net_stats.labs)
                                 rownames(ci_mat) <- c("LB_Basic", "UB_Basic",
                                                       "LB_Perc", "UB_Perc")
                                 
