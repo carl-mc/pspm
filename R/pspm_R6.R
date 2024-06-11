@@ -72,16 +72,19 @@ get_percentile_ci <- function(bmat, alpha) {
 #' @returns \code{TRUE}
 #' @export
 clusterExport_fast <- function(cl, varlist, envir = .GlobalEnv){
+  require(foreach)
+  registerDoParallel(cl)
+  
   # Save var.list to tempfile
   tmp.file <- tempfile()
   save(list = varlist, file = tmp.file, envir = envir)
   clusterExport(cl, list("tmp.file"), envir = environment())
   
   # Load data
-  load <- parLapply(cl, seq_along(cl), function(i){
+  load <- foreach(i = seq_along(cl), .noexport = c("tmp.file")) %dopar% {
     load(tmp.file, envir = .GlobalEnv)
     TRUE
-  })
+  }
   
   # Cleanup
   clusterEvalQ(cl = cl, expr = {
