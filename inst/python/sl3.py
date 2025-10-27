@@ -497,7 +497,7 @@ class VertexPackNS(NetworkStatistic):
               g_part = np.array(self.spatial_lattice.X[:,c])[np.array(new_partitioning) == temp_groups[p]]
               temp_stat[p] = hhi(g_part)
               
-            diff[c] = sum(temp_stat * temp_weights) - self.statistic
+            diff[c] = sum(temp_stat * temp_weights) - self.statistic[c]
           deltas[idx] = diff
           
         return deltas
@@ -673,7 +673,7 @@ class VertexSuffocationNS(NetworkStatistic):
               g_part = np.array(self.spatial_lattice.X[:,c])[np.array(new_partitioning) == temp_groups[p]]
               temp_stat[p] = hhi(g_part)
               
-            diff[c] = sum(temp_stat * temp_weights) - self.statistic
+            diff[c] = sum(temp_stat * temp_weights) - self.statistic[c]
           deltas[idx] = diff
           
         return deltas
