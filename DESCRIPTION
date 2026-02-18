@@ -23,10 +23,7 @@ Config/reticulate:
   list(
     packages = list(
       list(package = "scipy"),
-      list(package = "abc"),
       list(package = "numpy"),
-      list(package = "networkx"),
-      list(package = "typing"),
-      list(package = "collections")
+      list(package = "networkx")
     )
   )
